@@ -1,4 +1,4 @@
-package lpnu.repository;
+package lpnu.dto.repository;
 
 import lpnu.entity.User;
 import org.springframework.stereotype.Repository;
@@ -44,7 +44,6 @@ public class UserRepository {
         saved.setName(user.getName());
         saved.setSurname(user.getSurname());
         saved.setEmail(user.getEmail());
-        saved.setBirthday(user.getBirthday());
 
         return saved;
     }

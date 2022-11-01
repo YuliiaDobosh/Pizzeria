@@ -1,8 +1,7 @@
 package lpnu.mapper;
 
-import lpnu.entity.User;
 import lpnu.dto.UserDTO;
-
+import lpnu.entity.User;
 
 public class UserMapper {
     public static UserDTO toDTO(final User user) {
@@ -12,8 +11,6 @@ public class UserMapper {
         userDTO.setName(user.getName());
         userDTO.setSurname(user.getSurname());
         userDTO.setEmail(user.getEmail());
-        userDTO.setBirthday(user.getBirthday());
-        userDTO.setStatus(user.getStatus());
         userDTO.setRole(user.getRole());
 
         return userDTO;
@@ -26,8 +23,6 @@ public class UserMapper {
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         user.setEmail(userDTO.getEmail());
-        user.setBirthday(userDTO.getBirthday());
-        user.setStatus(userDTO.getStatus());
         user.setRole(userDTO.getRole());
 
         return user;
