@@ -41,6 +41,7 @@ public class UserRepository {
     public User update(final User user){
         final User saved = findById(user.getId());
 
+        saved.setNumber(user.getNumber());
         saved.setName(user.getName());
         saved.setSurname(user.getSurname());
         saved.setEmail(user.getEmail());

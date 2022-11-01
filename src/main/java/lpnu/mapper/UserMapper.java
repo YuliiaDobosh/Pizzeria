@@ -8,6 +8,7 @@ public class UserMapper {
         final UserDTO userDTO = new UserDTO();
 
         userDTO.setId(user.getId());
+        userDTO.setNumber(user.getNumber());
         userDTO.setName(user.getName());
         userDTO.setSurname(user.getSurname());
         userDTO.setEmail(user.getEmail());
@@ -20,6 +21,7 @@ public class UserMapper {
         final User user = new User();
 
         user.setId(userDTO.getId());
+        user.setNumber(userDTO.getNumber());
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         user.setEmail(userDTO.getEmail());

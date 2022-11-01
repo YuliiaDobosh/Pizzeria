@@ -11,6 +11,7 @@ import lpnu.entity.enumeration.UserRole;
 @NoArgsConstructor
 public class User {
     private Long id;
+    private Long number;
     private String name;
     private String surname;
     private String email;
