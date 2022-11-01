@@ -3,7 +3,7 @@ package lpnu.service.impl;
 import lpnu.dto.UserDTO;
 import lpnu.entity.User;
 import lpnu.mapper.UserMapper;
-import lpnu.dto.repository.UserRepository;
+import lpnu.repository.UserRepository;
 import lpnu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

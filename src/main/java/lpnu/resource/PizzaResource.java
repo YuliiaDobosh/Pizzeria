@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/pizza")
 public class PizzaResource {
 
     @Autowired
     private PizzaService pizzaService;
 
     @GetMapping
-    public List<PizzaDTO> getAllUsers() {
+    public List<PizzaDTO> getAllPizzas() {
         return pizzaService.getAllPizzas();
     }
 
