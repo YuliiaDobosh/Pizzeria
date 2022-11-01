@@ -1,4 +1,4 @@
-package lpnu.dto.repository;
+package lpnu.repository;
 
 import lpnu.entity.User;
 import org.springframework.stereotype.Repository;
