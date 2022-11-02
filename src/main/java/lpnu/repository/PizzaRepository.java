@@ -17,17 +17,17 @@ public class PizzaRepository {
     }
     public Pizza save(final Pizza pizza){
         ++id;
-        pizza.setId(id.longValue());
+        pizza.setId(id);
 
         pizzas.add(pizza);
 
         return pizza;
-    };
+    }
     public Pizza findById(final Long id){
         return pizzas.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Item not found by id: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Pizza not found by id: " + id));
     }
 
     public void delete(final Long id){

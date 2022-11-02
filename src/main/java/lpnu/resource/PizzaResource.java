@@ -33,7 +33,7 @@ public class PizzaResource {
     }
 
     @PutMapping
-    public PizzaDTO updatePizza(@RequestBody final PizzaDTO pizzaDTO) {
+    public PizzaDTO updatePizza(@RequestBody @Validated final PizzaDTO pizzaDTO) {
         return pizzaService.update(pizzaDTO);
     }
 
