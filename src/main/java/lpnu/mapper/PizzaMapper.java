@@ -21,11 +21,11 @@ public class PizzaMapper {
     public static Pizza toEntity(final PizzaDTO pizzaDTO){
         final Pizza pizza = new Pizza();
 
-        pizza.setName(pizza.getName());
-        pizza.setPrice(pizza.getPrice());
-        pizza.setAvailable(pizza.getAvailable());
-        pizza.setSize(pizza.getSize());
-        pizza.setId(pizza.getId());
+        pizza.setName(pizzaDTO.getName());
+        pizza.setPrice(pizzaDTO.getPrice());
+        pizza.setAvailable(pizzaDTO.getAvailable());
+        pizza.setSize(pizzaDTO.getSize());
+        pizza.setId(pizzaDTO.getId());
         return pizza;
     }
 }
