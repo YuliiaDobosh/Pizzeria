@@ -1,6 +1,6 @@
 package lpnu.entity.enumeration;
 
-public enum Components {
+public enum PizzaAdditions {
     PARMESAN,MOZZARELLA,BEEF,HAM,PROSCIUTTO,
     MUSHROOMS,TOMATOES,PAPRIKA,CHILI,ONION,
     OLIVES,CORN,PINEAPPLE,PEPPERONI,SALAMI,CHICKEN
