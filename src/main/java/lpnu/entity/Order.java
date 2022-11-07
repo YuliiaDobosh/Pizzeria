@@ -1,17 +1,18 @@
-package lpnu.dto;
+package lpnu.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BasketDTO {
+public class Order {
     private Long id;
-    private Long userId;
-    private List<BasketDetailsDTO> orders;
     private LocalDateTime orderDateTime;
+    private User user;
+    private List<OrderDetails> orders;
 }
