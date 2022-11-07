@@ -26,10 +26,8 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public PizzaDTO create(final PizzaDTO pizzaDTO) {
-
         final Pizza pizza = PizzaMapper.toEntity(pizzaDTO);
         pizzaRepository.save(pizza);
-
         return PizzaMapper.toDTO(pizza);
     }
 
@@ -51,5 +49,9 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public PizzaDTO findById(final Long id) {
         return PizzaMapper.toDTO(pizzaRepository.findById(id));
+    }
+    @Override
+    public PizzaDTO findByName(final String name) {
+        return PizzaMapper.toDTO(pizzaRepository.findByName(name));
     }
 }

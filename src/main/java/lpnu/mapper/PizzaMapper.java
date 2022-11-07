@@ -10,7 +10,6 @@ public class PizzaMapper {
 
         pizzaDTO.setName(pizza.getName());
         pizzaDTO.setPrice(pizza.getPrice());
-        pizzaDTO.setAvailable(pizza.getAvailable());
         pizzaDTO.setSize(pizza.getSize());
         pizzaDTO.setId(pizza.getId());
 
@@ -23,7 +22,6 @@ public class PizzaMapper {
 
         pizza.setName(pizzaDTO.getName());
         pizza.setPrice(pizzaDTO.getPrice());
-        pizza.setAvailable(pizzaDTO.getAvailable());
         pizza.setSize(pizzaDTO.getSize());
         pizza.setId(pizzaDTO.getId());
         return pizza;

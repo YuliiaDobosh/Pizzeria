@@ -18,7 +18,5 @@ public class PizzaDTO {
     private BigDecimal price;
     @NotNull
     private PizzaSize size;
-    @NotNull
-    private int available;
     private Long id;
 }
