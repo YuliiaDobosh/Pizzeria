@@ -1,6 +1,7 @@
 package lpnu.repository;
 
 import lpnu.entity.Pizza;
+import lpnu.util.ValidatePortions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -73,6 +74,11 @@ public class PizzaRepository {
         pizzaToChange.setIngredients(newIngredients);
         pizzaToChange.setWeight(changedWeight);
 
-        return pizzaToChange;
+        if (ValidatePortions.validateIngredientPortions(pizzaToChange, portions)) {
+            return pizzaToChange;
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
     }
 }
