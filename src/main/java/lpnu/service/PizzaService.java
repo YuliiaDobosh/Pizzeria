@@ -10,7 +10,6 @@ public interface PizzaService {
     PizzaDTO create(PizzaDTO pizzaDTO);
 
     PizzaDTO findById(Long id);
-    PizzaDTO findByName(final String name);
 
     PizzaDTO update(PizzaDTO pizzaDTO);
 

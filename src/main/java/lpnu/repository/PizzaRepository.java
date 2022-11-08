@@ -29,12 +29,6 @@ public class PizzaRepository {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Pizza not found by id: " + id));
     }
-    public Pizza findByName(final String name){
-        return pizzas.stream()
-                .filter(e -> e.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Pizza not found by name: " + name));
-    }
 
     public void delete(final Long id){
         pizzas = pizzas.stream()

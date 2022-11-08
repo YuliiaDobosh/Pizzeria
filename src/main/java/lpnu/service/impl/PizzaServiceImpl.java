@@ -50,8 +50,4 @@ public class PizzaServiceImpl implements PizzaService {
     public PizzaDTO findById(final Long id) {
         return PizzaMapper.toDTO(pizzaRepository.findById(id));
     }
-    @Override
-    public PizzaDTO findByName(final String name) {
-        return PizzaMapper.toDTO(pizzaRepository.findByName(name));
-    }
 }
