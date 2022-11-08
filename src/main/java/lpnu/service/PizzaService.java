@@ -14,4 +14,5 @@ public interface PizzaService {
     PizzaDTO update(PizzaDTO pizzaDTO);
 
     void delete(Long id);
+    PizzaDTO addIngredient(Long pizzaId, Long ingredientId, Integer portions);
 }

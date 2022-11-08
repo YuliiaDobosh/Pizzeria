@@ -7,6 +7,7 @@ import lpnu.entity.enumeration.PizzaSize;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -18,5 +19,6 @@ public class PizzaDTO {
     private BigDecimal price;
     @NotNull
     private PizzaSize size;
+    private Map<Long, Integer> ingredients;
     private Long id;
 }

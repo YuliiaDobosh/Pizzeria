@@ -50,4 +50,7 @@ public class PizzaServiceImpl implements PizzaService {
     public PizzaDTO findById(final Long id) {
         return PizzaMapper.toDTO(pizzaRepository.findById(id));
     }
+    public PizzaDTO addIngredient( final Long pizzaId,  final Long ingredientId, final Integer portions){
+        return PizzaMapper.toDTO(pizzaRepository.addIngredient(pizzaId,ingredientId,portions));
+    }
 }

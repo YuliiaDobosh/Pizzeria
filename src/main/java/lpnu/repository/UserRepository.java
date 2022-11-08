@@ -18,12 +18,12 @@ public class UserRepository {
 
     public User save(final User user){
         ++id;
-        user.setId(id.longValue());
+        user.setId(id);
 
         users.add(user);
 
         return user;
-    };
+    }
 
     public User findById(final Long id){
         return users.stream()

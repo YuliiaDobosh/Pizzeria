@@ -42,4 +42,11 @@ public class PizzaResource {
         pizzaService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/add-ingredient/{pizzaId}/{ingredientId}/{portions}")
+    public PizzaDTO addIngredient(@PathVariable final Long pizzaId,
+                                  @PathVariable final Long ingredientId,
+                                  @PathVariable final Integer portions) {
+        return pizzaService.addIngredient(pizzaId, ingredientId, portions);
+    }
 }
