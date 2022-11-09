@@ -21,21 +21,25 @@ public class MenuServiceImpl implements MenuService {
     private MenuRepository menuRepository;
     @Autowired
     private PizzaRepository pizzaRepository;
+    @Autowired
+    private MenuMapper menuMapper;
+    @Autowired
+    private PizzaMapper pizzaMapper;
 
     @Override
     public List<MenuDTO> getAllMenus() {
         return menuRepository.getAllMenus().stream()
-                .map(MenuMapper::toDTO)
+                .map(menuMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public MenuDTO create(final MenuDTO menuDTO) {
 
-        final Menu menu = MenuMapper.toEntity(menuDTO);
+        final Menu menu = menuMapper.toEntity(menuDTO);
         menuRepository.save(menu);
 
-        return MenuMapper.toDTO(menu);
+        return menuMapper.toDTO(menu);
     }
 
     @Override
@@ -45,17 +49,17 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public MenuDTO update(final MenuDTO menuDTO) {
-        final Menu menu = MenuMapper.toEntity(menuDTO);
+        final Menu menu = menuMapper.toEntity(menuDTO);
 
         menuRepository.update(menu);
 
-        return MenuMapper.toDTO(menu);
+        return menuMapper.toDTO(menu);
     }
     public PizzaDTO findPizzaById(final Long menuId, final Long pizzaId){
-        return PizzaMapper.toDTO(menuRepository.findPizzaById(menuId,pizzaId));
+        return pizzaMapper.toDTO(menuRepository.findPizzaById(menuId,pizzaId));
     }
     @Override
     public MenuDTO findById(final Long id) {
-        return MenuMapper.toDTO(menuRepository.findById(id));
+        return menuMapper.toDTO(menuRepository.findById(id));
     }
 }

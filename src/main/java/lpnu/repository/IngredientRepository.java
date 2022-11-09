@@ -41,6 +41,7 @@ public class IngredientRepository {
 
         saved.setName(saved.getName());
         saved.setWeight(saved.getWeight());
+        saved.setPrice(saved.getPrice());
         saved.setId(saved.getId());
 
         return saved;

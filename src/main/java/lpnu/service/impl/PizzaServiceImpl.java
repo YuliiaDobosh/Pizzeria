@@ -16,19 +16,20 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Autowired
     private PizzaRepository pizzaRepository;
-
+    @Autowired
+    private PizzaMapper pizzaMapper;
     @Override
     public List<PizzaDTO> getAllPizzas() {
         return pizzaRepository.getAllPizzas().stream()
-                .map(PizzaMapper::toDTO)
+                .map(pizzaMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PizzaDTO create(final PizzaDTO pizzaDTO) {
-        final Pizza pizza = PizzaMapper.toEntity(pizzaDTO);
+        final Pizza pizza = pizzaMapper.toEntity(pizzaDTO);
         pizzaRepository.save(pizza);
-        return PizzaMapper.toDTO(pizza);
+        return pizzaMapper.toDTO(pizza);
     }
 
     @Override
@@ -39,18 +40,18 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public PizzaDTO update(final PizzaDTO pizzaDTO) {
-        final Pizza pizza = PizzaMapper.toEntity(pizzaDTO);
+        final Pizza pizza = pizzaMapper.toEntity(pizzaDTO);
 
         pizzaRepository.update(pizza);
 
-        return PizzaMapper.toDTO(pizza);
+        return pizzaMapper.toDTO(pizza);
     }
 
     @Override
     public PizzaDTO findById(final Long id) {
-        return PizzaMapper.toDTO(pizzaRepository.findById(id));
+        return pizzaMapper.toDTO(pizzaRepository.findById(id));
     }
     public PizzaDTO addIngredient( final Long pizzaId,  final Long ingredientId, final Integer portions){
-        return PizzaMapper.toDTO(pizzaRepository.addIngredient(pizzaId,ingredientId,portions));
+        return pizzaMapper.toDTO(pizzaRepository.addIngredient(pizzaId,ingredientId,portions));
     }
 }

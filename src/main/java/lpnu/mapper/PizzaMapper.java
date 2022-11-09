@@ -2,10 +2,11 @@ package lpnu.mapper;
 
 import lpnu.dto.PizzaDTO;
 import lpnu.entity.Pizza;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class PizzaMapper {
-    public static PizzaDTO toDTO(final Pizza pizza) {
+    public PizzaDTO toDTO(final Pizza pizza) {
         final PizzaDTO pizzaDTO = new PizzaDTO();
 
         pizzaDTO.setName(pizza.getName());
@@ -20,7 +21,7 @@ public class PizzaMapper {
         return pizzaDTO;
     }
 
-    public static Pizza toEntity(final PizzaDTO pizzaDTO) {
+    public Pizza toEntity(final PizzaDTO pizzaDTO) {
         final Pizza pizza = new Pizza();
 
         pizza.setName(pizzaDTO.getName());

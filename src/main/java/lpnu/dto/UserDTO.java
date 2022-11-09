@@ -15,8 +15,6 @@ import javax.validation.constraints.NotNull;
 public class UserDTO {
     private Long id;
     @NotNull
-    private Long number;
-    @NotNull
     private String name;
     @NotNull
     private String surname;

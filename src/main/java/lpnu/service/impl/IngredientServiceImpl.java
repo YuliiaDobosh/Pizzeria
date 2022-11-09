@@ -22,17 +22,17 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public List<IngredientDTO> getAllIngredients() {
         return ingredientRepository.getAllIngredients().stream()
-                .map(IngredientMapper::toDTO)
+                .map(ingredientMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public IngredientDTO create(final IngredientDTO ingredientDTO) {
 
-        final Ingredient ingredient = IngredientMapper.toEntity(ingredientDTO);
+        final Ingredient ingredient = ingredientMapper.toEntity(ingredientDTO);
         ingredientRepository.save(ingredient);
 
-        return IngredientMapper.toDTO(ingredient);
+        return ingredientMapper.toDTO(ingredient);
     }
 
     @Override
@@ -42,15 +42,15 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public IngredientDTO update(final IngredientDTO ingredientDTO) {
-        final Ingredient ingredient = IngredientMapper.toEntity(ingredientDTO);
+        final Ingredient ingredient = ingredientMapper.toEntity(ingredientDTO);
 
         ingredientRepository.update(ingredient);
 
-        return IngredientMapper.toDTO(ingredient);
+        return ingredientMapper.toDTO(ingredient);
     }
 
     @Override
     public IngredientDTO findById(final Long id) {
-        return IngredientMapper.toDTO(ingredientRepository.findById(id));
+        return ingredientMapper.toDTO(ingredientRepository.findById(id));
     }
 }

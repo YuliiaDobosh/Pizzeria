@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MenuMapper {
-    public static Menu toEntity(final MenuDTO menuDTO) {
+    public Menu toEntity(final MenuDTO menuDTO) {
         final Menu menu = new Menu();
         menu.setId(menuDTO.getId());
         if (menuDTO.getAllPizzas() != null) {
@@ -16,7 +16,7 @@ public class MenuMapper {
         return menu;
     }
 
-    public static MenuDTO toDTO(final Menu menu) {
+    public MenuDTO toDTO(final Menu menu) {
         final MenuDTO menuDTO = new MenuDTO();
         menuDTO.setId(menu.getId());
         if (menu.getAllPizzas() != null) {
