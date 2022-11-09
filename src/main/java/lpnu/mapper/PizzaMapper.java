@@ -2,7 +2,6 @@ package lpnu.mapper;
 
 import lpnu.dto.PizzaDTO;
 import lpnu.entity.Pizza;
-import lpnu.util.PizzaWeight;
 
 
 public class PizzaMapper {
@@ -31,7 +30,7 @@ public class PizzaMapper {
         if (pizzaDTO.getIngredients() != null) {
             pizza.setIngredients(pizzaDTO.getIngredients());
         }
-        pizza.setWeight(PizzaWeight.PizzaWeight(pizzaDTO));
+        pizza.setWeight(pizzaDTO.getSize().weight);
         return pizza;
     }
 }

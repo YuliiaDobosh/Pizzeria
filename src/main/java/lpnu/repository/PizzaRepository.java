@@ -67,9 +67,7 @@ public class PizzaRepository {
         } else {
             newIngredients.put(ingredientId, portions);
         }
-        changedWeight += newIngredients.entrySet()
-                .stream()
-                .mapToInt(e -> ingredientRepository.findById(e.getKey()).getWeight() * e.getValue()).sum();
+        changedWeight += ingredientRepository.findById(ingredientId).getWeight();
 
         pizzaToChange.setIngredients(newIngredients);
         pizzaToChange.setWeight(changedWeight);
