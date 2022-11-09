@@ -4,12 +4,24 @@ import lpnu.dto.MenuDTO;
 import lpnu.entity.Menu;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class MenuMapper {
-public Menu toEntity(final MenuDTO menuDTO){
-    return new Menu(menuDTO.getId(), menuDTO.getAllPizzas());
-}
-public MenuDTO toDTO (final Menu menu){
-    return new MenuDTO(menu.getId(), menu.getAllPizzas());
-}
+    public static Menu toEntity(final MenuDTO menuDTO) {
+        final Menu menu = new Menu();
+        menu.setId(menuDTO.getId());
+        if (menuDTO.getAllPizzas() != null) {
+            menu.setAllPizzas(menuDTO.getAllPizzas());
+        }
+        return menu;
+    }
+
+    public static MenuDTO toDTO(final Menu menu) {
+        final MenuDTO menuDTO = new MenuDTO();
+        menuDTO.setId(menu.getId());
+        if (menu.getAllPizzas() != null) {
+            menuDTO.setAllPizzas(menu.getAllPizzas());
+        }
+        return menuDTO;
+    }
 }

@@ -13,6 +13,7 @@ public class PizzaMapper {
         pizzaDTO.setPrice(pizza.getPrice());
         pizzaDTO.setSize(pizza.getSize());
         pizzaDTO.setId(pizza.getId());
+        pizzaDTO.setWeight(pizza.getWeight());
         if (pizza.getIngredients() != null) {
             pizzaDTO.setIngredients(pizza.getIngredients());
         }
@@ -30,7 +31,7 @@ public class PizzaMapper {
         if (pizzaDTO.getIngredients() != null) {
             pizza.setIngredients(pizzaDTO.getIngredients());
         }
-        pizza.setWeight(PizzaWeight.PizzaWeight(pizza));
+        pizza.setWeight(PizzaWeight.PizzaWeight(pizzaDTO));
         return pizza;
     }
 }

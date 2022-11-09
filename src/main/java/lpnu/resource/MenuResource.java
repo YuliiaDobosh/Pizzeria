@@ -1,6 +1,7 @@
 package lpnu.resource;
 
 import lpnu.dto.MenuDTO;
+import lpnu.dto.PizzaDTO;
 import lpnu.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,14 @@ public class MenuResource {
     @Autowired
     private MenuService menuService;
 
-    @GetMapping
+    @GetMapping()
     public List<MenuDTO> getAllMenus() {
         return menuService.getAllMenus();
     }
-
+    @GetMapping("/{menuId}/{pizzaId}")
+    public PizzaDTO findPizzaById(@PathVariable final Long menuId, @PathVariable final Long pizzaId){
+        return menuService.findPizzaById(menuId, pizzaId);
+    }
     @GetMapping("/{id}")
     public MenuDTO findById(@PathVariable final Long id) {
         return menuService.findById(id);

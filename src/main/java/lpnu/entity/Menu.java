@@ -13,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Menu {
     private Long id;
-    private List<Pizza> allPizzas = new ArrayList<>();
+    private List<Long> allPizzas = new ArrayList<>();
 
     @Override
     public boolean equals(final Object o) {
