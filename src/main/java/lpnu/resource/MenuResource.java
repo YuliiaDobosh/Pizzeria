@@ -8,36 +8,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/menu")
 public class MenuResource {
 
     @Autowired
     private MenuService menuService;
-
-    @GetMapping()
-    public List<MenuDTO> getAllMenus() {
-        return menuService.getAllMenus();
+    @GetMapping
+    public MenuDTO getMenu(){
+        return menuService.getMenu();
     }
-    @GetMapping("/{menuId}/{pizzaId}")
-    public PizzaDTO findPizzaById(@PathVariable final Long menuId, @PathVariable final Long pizzaId){
-        return menuService.findPizzaById(menuId, pizzaId);
-    }
-    @GetMapping("/{id}")
-    public MenuDTO findById(@PathVariable final Long id) {
-        return menuService.findById(id);
+    @GetMapping("/{pizzaId}")
+    public PizzaDTO findPizzaById(@PathVariable final Long pizzaId){
+        return menuService.findPizzaById(pizzaId);
     }
 
     @PostMapping
-    public MenuDTO createMenu(@RequestBody @Validated final MenuDTO menuDTO) {
-        return menuService.create(menuDTO);
+    public MenuDTO createMenu(@RequestBody @Validated final PizzaDTO pizzaDTO) {
+        return menuService.create(pizzaDTO);
     }
 
     @PutMapping
-    public MenuDTO updateMenu(@RequestBody final MenuDTO menuDTO) {
-        return menuService.update(menuDTO);
+    public PizzaDTO updateMenu(@RequestBody final PizzaDTO pizzaDTO) {
+        return menuService.update(pizzaDTO);
     }
 
     @DeleteMapping("/{id}")

@@ -12,8 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MenuDTO {
-    private Long id;
     @NotNull
-    private List<Long> allPizzas = new ArrayList<>();
+    private List<PizzaDTO> allPizzas = new ArrayList<>();
 
 }

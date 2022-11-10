@@ -5,56 +5,49 @@ import lpnu.entity.Pizza;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
 public class MenuRepository {
     @Autowired
     PizzaRepository pizzaRepository;
-    private List<Menu> menus = new ArrayList<>();
+    private Menu menu = new Menu();
     private Long id = 0L;
 
-    public List<Menu> getAllMenus(){
-        return new ArrayList<>(menus);
+    public Menu getMenu() {
+        return new Menu(menu);
     }
 
-    public Menu save(final Menu menu){
+    public Menu save(final Pizza pizza) {
         ++id;
-        menu.setId(id);
-
-        menus.add(menu);
+        pizza.setId(id);
+        menu.getAllPizzas().add(pizza); //clone pizza
 
         return menu;
     }
-    public Menu findById(final Long id){
-        return menus.stream()
-                .filter(e -> e.getId().equals(id))
+
+    public Pizza findPizzaById(final Long pizzaId) {
+        return menu.getAllPizzas()
+                .stream()
+                .filter(p -> p.getId().equals(pizzaId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Menu not found by id: " + id));
+                .orElseThrow();
     }
+
+    public Pizza update(final Pizza pizza) {
+        final Pizza pizzaToUpdate = findPizzaById(pizza.getId());
+
+        pizzaToUpdate.setName(pizza.getName());
+        pizzaToUpdate.setPrice(pizza.getPrice());
+        pizzaToUpdate.setSize(pizza.getSize());
+        pizzaToUpdate.setIngredients(pizza.getIngredients());
+
+        return pizzaToUpdate;
+    }
+
     public void delete(final Long id) {
-        menus = menus.stream()
+        menu.setAllPizzas(menu.getAllPizzas().stream()
                 .filter(e -> !e.getId().equals(id))
-                .collect(Collectors.toList());
-    }
-    public Pizza findPizzaById(final Long menuId, final Long pizzaId){
-        final Menu menu = findById(menuId);
-         final List<Long> pizzaIdToFind = menu.getAllPizzas().stream()
-                .filter(i-> i.equals(pizzaId)).toList();
-        if(pizzaIdToFind.size()!=0){
-            return pizzaRepository.findById(pizzaId);
-        }
-        else{
-            throw new IllegalArgumentException("Pizza not found in menu by id: " + pizzaId);
-        }
-    }
-    public Menu update(final Menu menu){
-        final Menu saved = findById(menu.getId());
-
-        saved.setAllPizzas(menu.getAllPizzas());
-
-        return saved;
+                .collect(Collectors.toList()));
     }
 }
