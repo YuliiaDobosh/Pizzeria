@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lpnu.entity.enumeration.UserRole;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
