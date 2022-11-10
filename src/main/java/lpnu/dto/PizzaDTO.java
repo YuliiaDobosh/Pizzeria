@@ -19,7 +19,9 @@ public class PizzaDTO {
     private BigDecimal price;
     @NotNull
     private PizzaSize size;
+    @NotNull
     private int weight;
+    @NotNull
     private Map<Long, Integer> ingredients;
     private Long id;
 }
