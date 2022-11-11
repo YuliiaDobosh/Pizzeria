@@ -1,20 +1,14 @@
 package lpnu.repository;
 
 import lpnu.entity.Pizza;
-import lpnu.util.ValidatePortions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
 public class PizzaRepository {
-    @Autowired
-    IngredientRepository ingredientRepository;
     private List<Pizza> pizzas = new ArrayList<>();
     private Long id = 0L;
 
@@ -55,28 +49,7 @@ public class PizzaRepository {
         return saved;
     }
 
-    public Pizza addIngredient(final Long pizzaId, final Long ingredientId, final Integer portions) {
-        final Pizza pizzaToChange = findById(pizzaId);
-        final Map<Long, Integer> newIngredients = new HashMap<>(pizzaToChange.getIngredients());
-        int changedWeight = pizzaToChange.getWeight();
-
-        if (newIngredients.containsKey(ingredientId)) {
-            newIngredients.entrySet().stream()
-                    .filter(e -> e.getKey().equals(ingredientId))
-                    .collect(Collectors.toMap(Map.Entry::getKey, v -> v.setValue(v.getValue() + portions)));
-        } else {
-            newIngredients.put(ingredientId, portions);
-        }
-        changedWeight += ingredientRepository.findById(ingredientId).getWeight();
-
-        pizzaToChange.setIngredients(newIngredients);
-        pizzaToChange.setWeight(changedWeight);
-
-        if (ValidatePortions.validateIngredientPortions(pizzaToChange, portions)) {
-            return pizzaToChange;
-        }
-        else{
-            throw new IllegalArgumentException();
-        }
-    }
+    /*public Pizza addIngredient(final Long pizzaId, final Long ingredientId, final Integer portions) {
+        return pizzaMapper.toEntity(pizzaService.addIngredient(pizzaId, ingredientId, portions));
+    }*/
 }

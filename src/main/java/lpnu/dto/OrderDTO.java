@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDTO {
     private Long id;
+    @NotNull
     private Long userId;
     @NotNull
     private List<OrderDetailsDTO> orders;
