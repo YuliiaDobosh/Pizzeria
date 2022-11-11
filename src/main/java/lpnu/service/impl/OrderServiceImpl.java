@@ -56,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO findById(final Long id) {
         return orderMapper.toDTO(orderRepository.findById(id));
     }
+
     @Override
     public void addPizzaToOrder(final AddPizzaToOrderDTO addDTO) {
 
@@ -64,12 +65,11 @@ public class OrderServiceImpl implements OrderService {
         final Pizza pizza = pizzaRepository.findById(addDTO.getPizzaId());
 
 
-
-       final boolean isPizzaInOrder = order.getOrders().stream()
+        final boolean isPizzaInOrder = order.getOrders().stream()
                 .map(OrderDetails::getPizza)
                 .anyMatch(e -> e.equals(pizza));
 
-        if(isPizzaInOrder){
+        if (isPizzaInOrder) {
             final OrderDetails savedOrderDetails = order.getOrders().stream()
                     .filter(e -> e.getPizza().equals(pizza))
                     .findFirst().get();
@@ -84,6 +84,23 @@ public class OrderServiceImpl implements OrderService {
 
             orderRepository.update(order);
         }
+    }
+
+    @Override
+    public void removePizza(final Long orderId, final Long pizzaId) {
+        final Order order = orderRepository.findById(orderId);
+        final Pizza pizzaToRemove = pizzaRepository.findById(pizzaId);
+        final OrderDetails orderWithPizzaToRemove = order.getOrders()
+                .stream()
+                .filter(orderDetails -> orderDetails.getPizza().equals(pizzaToRemove))
+                .findFirst()
+                .orElseThrow();
+       final List<OrderDetails> ordersWithoutPizza = order.getOrders()
+               .stream()
+               .filter(orderDetails -> !orderDetails.equals(orderWithPizzaToRemove))
+               .toList();
+       order.setOrders(ordersWithoutPizza);
+       //orderRepository.update(ordersWithoutPizza);
     }
 
     @Override

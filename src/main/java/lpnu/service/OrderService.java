@@ -11,5 +11,6 @@ public interface OrderService {
     OrderDTO findById(Long id);
 
     void addPizzaToOrder(AddPizzaToOrderDTO addDTO);
+    void removePizza(Long orderId, Long pizzaId);
     void delete(Long id);
 }

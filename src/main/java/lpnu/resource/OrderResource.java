@@ -34,6 +34,11 @@ public class OrderResource {
     public void addPizzaToOrder(final @RequestBody @Validated AddPizzaToOrderDTO addDTO) {
         orderService.addPizzaToOrder(addDTO);
     }
+    @DeleteMapping("/{orderId}/{pizzaId}")
+    public ResponseEntity removePizza(final @PathVariable Long orderId, final @PathVariable Long pizzaId) {
+        orderService.removePizza(orderId, pizzaId);
+        return ResponseEntity.ok().build();
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity delete(final @PathVariable Long id) {
         orderService.delete(id);
