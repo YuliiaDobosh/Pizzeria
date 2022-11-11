@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lpnu.entity.enumeration.PizzaSize;
-
-
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Objects;
@@ -15,10 +14,15 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pizza {
+    @NotNull
     private String name;
+    @NotNull
     private BigDecimal price;
+    @NotNull
     private PizzaSize size;
+    @NotNull
     private int weight;
+    @NotNull
     private Map<Long, Integer> ingredients;
     private Long id;
 
