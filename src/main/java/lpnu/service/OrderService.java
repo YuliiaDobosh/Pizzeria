@@ -1,5 +1,6 @@
 package lpnu.service;
 
+import lpnu.dto.AddPizzaToOrderDTO;
 import lpnu.dto.OrderDTO;
 
 import java.util.List;
@@ -9,5 +10,6 @@ public interface OrderService {
     OrderDTO create(OrderDTO orderDTO);
     OrderDTO findById(Long id);
 
+    void addPizzaToOrder(AddPizzaToOrderDTO addDTO);
     void delete(Long id);
 }

@@ -30,7 +30,7 @@ public class Pizza {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof Pizza pizza)) return false;
-        return getWeight() == pizza.getWeight() && Objects.equals(getName(), pizza.getName()) && Objects.equals(getPrice(), pizza.getPrice()) && getSize() == pizza.getSize() && Objects.equals(getIngredients(), pizza.getIngredients()) && Objects.equals(getId(), pizza.getId());
+        return getWeight() == pizza.getWeight() && Objects.equals(getName(), pizza.getName()) && Objects.equals(getPrice(), pizza.getPrice()) && getSize() == pizza.getSize() && Objects.equals(getIngredients(), pizza.getIngredients()); /*&& Objects.equals(getId(), pizza.getId());*/
     }
 
     @Override

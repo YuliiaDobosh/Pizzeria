@@ -48,8 +48,4 @@ public class PizzaRepository {
 
         return saved;
     }
-
-    /*public Pizza addIngredient(final Long pizzaId, final Long ingredientId, final Integer portions) {
-        return pizzaMapper.toEntity(pizzaService.addIngredient(pizzaId, ingredientId, portions));
-    }*/
 }

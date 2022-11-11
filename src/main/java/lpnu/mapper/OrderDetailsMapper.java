@@ -24,6 +24,7 @@ public class OrderDetailsMapper {
 
         orderDetailsDTO.setPizzaId(orderDetails.getPizza().getId());
         orderDetailsDTO.setPizzaName(orderDetails.getPizza().getName());
+        orderDetailsDTO.setPizzaPrice(orderDetails.getPizza().getPrice());
         orderDetailsDTO.setAmount(orderDetails.getAmount());
 
         return orderDetailsDTO;

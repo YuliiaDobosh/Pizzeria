@@ -20,7 +20,7 @@ public class MenuRepository {
     public Menu save(final Pizza pizza) {
         final Pizza pizzaToAdd = pizzaRepository.getAllPizzas()
                 .stream()
-                .filter(p->p.getName().equals(pizza.getName()))
+                .filter(p->p.equals(pizza))
                 .findFirst().orElseThrow();
         final Long id = pizzaToAdd.getId();
         pizza.setId(id);

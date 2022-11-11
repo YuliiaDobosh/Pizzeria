@@ -1,8 +1,10 @@
 package lpnu.service.impl;
 
+import lpnu.dto.AddPizzaToOrderDTO;
 import lpnu.dto.OrderDTO;
 import lpnu.entity.Order;
 import lpnu.entity.OrderDetails;
+import lpnu.entity.Pizza;
 import lpnu.mapper.OrderDetailsMapper;
 import lpnu.mapper.OrderMapper;
 import lpnu.repository.OrderRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,13 +43,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO create(final OrderDTO orderDTO) {
         final Order order = orderMapper.toEntity(orderDTO);
-        final List<OrderDetails> orderDetails = orderDTO.getOrders()
-                .stream()
-                .map(orderDetailsMapper::toEntity)
-                .collect(Collectors.toList());
 
         order.setOrderDateTime(LocalDateTime.now());
-        order.setOrders(orderDetails);
+        order.setOrders(new ArrayList<>());
 
         orderRepository.save(order);
 
@@ -56,6 +55,35 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO findById(final Long id) {
         return orderMapper.toDTO(orderRepository.findById(id));
+    }
+    @Override
+    public void addPizzaToOrder(final AddPizzaToOrderDTO addDTO) {
+
+        final Order order = orderRepository.findById(addDTO.getOrderId());
+
+        final Pizza pizza = pizzaRepository.findById(addDTO.getPizzaId());
+
+
+
+       final boolean isPizzaInOrder = order.getOrders().stream()
+                .map(OrderDetails::getPizza)
+                .anyMatch(e -> e.equals(pizza));
+
+        if(isPizzaInOrder){
+            final OrderDetails savedOrderDetails = order.getOrders().stream()
+                    .filter(e -> e.getPizza().equals(pizza))
+                    .findFirst().get();
+
+            savedOrderDetails.setAmount(savedOrderDetails.getAmount() + addDTO.getAmount());
+
+            orderRepository.update(order);
+
+        } else {
+            final OrderDetails orderDetails = new OrderDetails(pizza, addDTO.getAmount());
+            order.getOrders().add(orderDetails);
+
+            orderRepository.update(order);
+        }
     }
 
     @Override

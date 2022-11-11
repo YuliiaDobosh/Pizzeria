@@ -6,7 +6,6 @@ import lpnu.mapper.PizzaMapper;
 import lpnu.repository.IngredientRepository;
 import lpnu.repository.PizzaRepository;
 import lpnu.service.PizzaService;
-import lpnu.util.ValidatePortions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,19 +62,18 @@ public class PizzaServiceImpl implements PizzaService {
     public PizzaDTO addIngredient(final Long pizzaId, final Long ingredientId, final Integer portions) {
         final Pizza pizzaToChange = pizzaRepository.findById(pizzaId);
         final Map<Long, Integer> newIngredients = new HashMap<>(pizzaToChange.getIngredients());
+        if (validatePortionsToAdd(pizzaToChange, ingredientId, portions)) {
+            if (newIngredients.containsKey(ingredientId)) {
+                newIngredients.entrySet().stream()
+                        .filter(e -> e.getKey().equals(ingredientId))
+                        .collect(Collectors.toMap(Map.Entry::getKey, v -> v.setValue(v.getValue() + portions)));
+            } else {
+                newIngredients.put(ingredientId, portions);
+            }
 
-        if (newIngredients.containsKey(ingredientId)) {
-            newIngredients.entrySet().stream()
-                    .filter(e -> e.getKey().equals(ingredientId))
-                    .collect(Collectors.toMap(Map.Entry::getKey, v -> v.setValue(v.getValue() + portions)));
-        } else {
-            newIngredients.put(ingredientId, portions);
-        }
-
-        pizzaToChange.setIngredients(newIngredients);
-        pizzaToChange.setWeight(addIngredientWeight(pizzaId, ingredientId));
-        pizzaToChange.setPrice(addIngredientPrice(pizzaId, ingredientId));
-        if (ValidatePortions.validateIngredientPortions(pizzaToChange, portions)) {
+            pizzaToChange.setIngredients(newIngredients);
+            pizzaToChange.setWeight(addIngredientWeight(pizzaId, ingredientId));
+            pizzaToChange.setPrice(addIngredientPrice(pizzaId, ingredientId));
             return pizzaMapper.toDTO(pizzaToChange);
         } else {
             throw new IllegalArgumentException();
@@ -88,5 +86,14 @@ public class PizzaServiceImpl implements PizzaService {
 
     public BigDecimal addIngredientPrice(final Long pizzaId, final Long ingredientId) {
         return pizzaRepository.findById(pizzaId).getPrice().add(ingredientRepository.findById(ingredientId).getPrice());
+    }
+    public boolean validatePortionsToAdd(final Pizza pizza, final Long ingredientId, final Integer portions) {
+        final Integer portionLimitToAdd = 1;
+        final Integer portionLimitInPizza = 2;
+        final Map<Long, Integer> wrongPortions = pizza.getIngredients().entrySet().stream()
+                .filter(e->e.getKey().equals(ingredientId))
+                .filter(e->e.getValue() >= portionLimitInPizza)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return wrongPortions.size() == 0 && portions.equals(portionLimitToAdd);
     }
 }

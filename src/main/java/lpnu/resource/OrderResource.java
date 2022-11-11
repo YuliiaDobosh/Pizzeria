@@ -1,5 +1,6 @@
 package lpnu.resource;
 
+import lpnu.dto.AddPizzaToOrderDTO;
 import lpnu.dto.OrderDTO;
 import lpnu.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class OrderResource {
     @PostMapping
     public OrderDTO createOrder(final @RequestBody @Validated OrderDTO orderDTO) {
         return orderService.create(orderDTO);
+    }
+    @PostMapping("/add-pizza")
+    public void addPizzaToOrder(final @RequestBody @Validated AddPizzaToOrderDTO addDTO) {
+        orderService.addPizzaToOrder(addDTO);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity delete(final @PathVariable Long id) {
