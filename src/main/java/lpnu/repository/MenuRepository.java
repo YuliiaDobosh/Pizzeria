@@ -11,17 +11,20 @@ import java.util.stream.Collectors;
 public class MenuRepository {
     @Autowired
     PizzaRepository pizzaRepository;
-    private Menu menu = new Menu();
-    private Long id = 0L;
+    private final Menu menu = new Menu();
 
     public Menu getMenu() {
         return new Menu(menu);
     }
 
     public Menu save(final Pizza pizza) {
-        ++id;
+        final Pizza pizzaToAdd = pizzaRepository.getAllPizzas()
+                .stream()
+                .filter(p->p.getName().equals(pizza.getName()))
+                .findFirst().orElseThrow();
+        final Long id = pizzaToAdd.getId();
         pizza.setId(id);
-        menu.getAllPizzas().add(pizza); //clone pizza
+        menu.getAllPizzas().add(pizza);
 
         return menu;
     }
@@ -35,14 +38,20 @@ public class MenuRepository {
     }
 
     public Pizza update(final Pizza pizza) {
-        final Pizza pizzaToUpdate = findPizzaById(pizza.getId());
+        final Pizza menuPizzaToUpdate = findPizzaById(pizza.getId());
+        final Pizza pizzaToUpdate = pizzaRepository.findById(pizza.getId());
 
-        pizzaToUpdate.setName(pizza.getName());
-        pizzaToUpdate.setPrice(pizza.getPrice());
-        pizzaToUpdate.setSize(pizza.getSize());
-        pizzaToUpdate.setIngredients(pizza.getIngredients());
+        menuPizzaToUpdate.setName(pizza.getName());
+        menuPizzaToUpdate.setPrice(pizza.getPrice());
+        menuPizzaToUpdate.setSize(pizza.getSize());
+        menuPizzaToUpdate.setIngredients(pizza.getIngredients());
 
-        return pizzaToUpdate;
+        pizzaToUpdate.setName(menuPizzaToUpdate.getName());
+        pizzaToUpdate.setPrice(menuPizzaToUpdate.getPrice());
+        pizzaToUpdate.setSize(menuPizzaToUpdate.getSize());
+        pizzaToUpdate.setIngredients(menuPizzaToUpdate.getIngredients());
+
+        return menuPizzaToUpdate;
     }
 
     public void delete(final Long id) {
