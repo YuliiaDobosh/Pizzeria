@@ -1,12 +1,23 @@
 package lpnu.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import lpnu.entity.Ingredient;
 import lpnu.entity.Menu;
 import lpnu.entity.Pizza;
 import lpnu.exception.ServiceException;
+import lpnu.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -22,7 +33,7 @@ public class MenuRepository {
     public Menu save(final Pizza pizza) {
         final Pizza pizzaToAdd = pizzaRepository.getAllPizzas()
                 .stream()
-                .filter(p->p.equals(pizza))
+                .filter(p -> p.equals(pizza))
                 .findFirst().orElseThrow();
         final Long id = pizzaToAdd.getId();
         pizza.setId(id);
@@ -62,4 +73,38 @@ public class MenuRepository {
                 .filter(e -> !e.getId().equals(pizzaId))
                 .collect(Collectors.toList()));
     }
+
+//    @PostConstruct
+//    public void init() {
+//
+//        final Path file = Paths.get("menu.txt");
+//        try {
+//            final String savedItemsAsString = Files.readString(file, StandardCharsets.UTF_16);
+//            menu.setAllPizzas(JacksonUtil.deserialize(savedItemsAsString, new TypeReference<List<Pizza>>() {
+//            }));
+//
+//            if (menu.getAllPizzas() == null) {
+//                menu.setAllPizzas(new ArrayList<>());
+//                return;
+//
+//            }
+//
+//        } catch (final Exception e) {
+//            System.out.println("We have an issue in menu");
+//            menu.setAllPizzas(new ArrayList<>());
+//        }
+//    }
+//
+//
+//    @PreDestroy
+//    public void preDestroy() {
+//        final Path file = Paths.get("menu.txt");
+//
+//        try {
+//            Files.writeString(file, JacksonUtil.serialize(menu), StandardCharsets.UTF_16);
+//        } catch (final Exception e) {
+//            System.out.println("We have an issue in menu");
+//        }
+//    }
 }
+

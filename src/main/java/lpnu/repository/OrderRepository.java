@@ -1,10 +1,19 @@
 package lpnu.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import lpnu.entity.Ingredient;
 import lpnu.entity.Order;
 import lpnu.exception.ServiceException;
+import lpnu.util.JacksonUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,4 +60,42 @@ public class OrderRepository {
 
         return saved;
     }
+
+    @PostConstruct
+    public void init() {
+
+        final Path file = Paths.get("order.txt");
+        try {
+            final String savedItemsAsString = Files.readString(file, StandardCharsets.UTF_16);
+            orders = JacksonUtil.deserialize(savedItemsAsString, new TypeReference<List<Order>>() {
+            });
+
+            if (orders == null) {
+                orders = new ArrayList<>();
+                return;
+            }
+
+            final long maxId = orders.stream().mapToLong(Order::getId).max().orElse(1);
+
+            this.id = maxId + 1;
+
+        } catch (final Exception e) {
+            System.out.println("We have an issue in order");
+            orders = new ArrayList<>();
+        }
+    }
+
+
+    @PreDestroy
+    public void preDestroy() {
+        final Path file = Paths.get("order.txt");
+
+        try {
+            Files.writeString(file, JacksonUtil.serialize(orders), StandardCharsets.UTF_16);
+        } catch (final Exception e) {
+            System.out.println("We have an issue in order");
+        }
+
+    }
+
 }
