@@ -1,33 +1,37 @@
 package lpnu.repository;
 
 import lpnu.entity.Ingredient;
+import lpnu.exception.ServiceException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Repository
 public class IngredientRepository {
     private List<Ingredient> ingredients = new ArrayList<>();
     private Long id = 0L;
 
-    public List<Ingredient> getAllIngredients(){
-        return  new ArrayList<>(ingredients);
+    public List<Ingredient> getAllIngredients() {
+        return new ArrayList<>(ingredients);
     }
 
-    public Ingredient save(final Ingredient ingredient){
+    public Ingredient save(final Ingredient ingredient) {
         ++id;
         ingredient.setId(id);
         ingredients.add(ingredient);
         return ingredient;
     }
 
-    public Ingredient findById(final Long id){
+    public Ingredient findById(final Long id) {
         return ingredients.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Menu not found by id: " + id));
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                        "Ingredient can not be found by id: " + id));
     }
 
     public void delete(final Long id) {
@@ -36,7 +40,7 @@ public class IngredientRepository {
                 .collect(Collectors.toList());
     }
 
-    public Ingredient update(final Ingredient ingredient){
+    public Ingredient update(final Ingredient ingredient) {
         final Ingredient saved = findById(ingredient.getId());
 
         saved.setName(saved.getName());

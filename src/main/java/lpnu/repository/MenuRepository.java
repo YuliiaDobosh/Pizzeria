@@ -2,7 +2,9 @@ package lpnu.repository;
 
 import lpnu.entity.Menu;
 import lpnu.entity.Pizza;
+import lpnu.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.stream.Collectors;
@@ -34,7 +36,8 @@ public class MenuRepository {
                 .stream()
                 .filter(p -> p.getId().equals(pizzaId))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                        "Pizza can not be found by id: " + pizzaId + "in menu."));
     }
 
     public Pizza update(final Pizza pizza) {

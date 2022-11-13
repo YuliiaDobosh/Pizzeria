@@ -1,6 +1,8 @@
 package lpnu.repository;
 
 import lpnu.entity.Order;
+import lpnu.exception.ServiceException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -30,7 +32,8 @@ public class OrderRepository {
         return orders.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Order not found by id: " + id));
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                        "Order can not be found by id: " + id));
     }
 
     public void delete(final Long id) {

@@ -2,11 +2,13 @@ package lpnu.service.impl;
 
 import lpnu.dto.PizzaDTO;
 import lpnu.entity.Pizza;
+import lpnu.exception.ServiceException;
 import lpnu.mapper.PizzaMapper;
 import lpnu.repository.IngredientRepository;
 import lpnu.repository.PizzaRepository;
 import lpnu.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -76,7 +78,8 @@ public class PizzaServiceImpl implements PizzaService {
             pizzaToChange.setPrice(addIngredientPrice(pizzaId, ingredientId));
             return pizzaMapper.toDTO(pizzaToChange);
         } else {
-            throw new IllegalArgumentException();
+            throw new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                    "You can not add ingredient to pizza.Portions can not be greater than 1.");
         }
     }
 

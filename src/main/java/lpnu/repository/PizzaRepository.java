@@ -1,6 +1,8 @@
 package lpnu.repository;
 
 import lpnu.entity.Pizza;
+import lpnu.exception.ServiceException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -29,7 +31,8 @@ public class PizzaRepository {
         return pizzas.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Pizza not found by id: " + id));
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                        "Pizza can not be found by id: " + id));
     }
 
     public void delete(final Long id) {

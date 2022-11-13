@@ -1,6 +1,8 @@
 package lpnu.repository;
 
 import lpnu.entity.User;
+import lpnu.exception.ServiceException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,11 +14,11 @@ public class UserRepository {
     private List<User> users = new ArrayList<>();
     private Long id = 0L;
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return new ArrayList<>(users);
     }
 
-    public User save(final User user){
+    public User save(final User user) {
         ++id;
         user.setId(id);
 
@@ -25,20 +27,21 @@ public class UserRepository {
         return user;
     }
 
-    public User findById(final Long id){
+    public User findById(final Long id) {
         return users.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("User not found by id: " + id));
+                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                        "User can not be found by id: " + id));
     }
 
-    public void delete(final Long id){
+    public void delete(final Long id) {
         users = users.stream()
                 .filter(e -> !e.getId().equals(id))
                 .collect(Collectors.toList());
     }
 
-    public User update(final User user){
+    public User update(final User user) {
         final User saved = findById(user.getId());
 
         saved.setName(user.getName());

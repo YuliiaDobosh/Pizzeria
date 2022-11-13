@@ -6,6 +6,7 @@ import lpnu.entity.Menu;
 import lpnu.entity.Order;
 import lpnu.entity.OrderDetails;
 import lpnu.entity.Pizza;
+import lpnu.exception.ServiceException;
 import lpnu.mapper.OrderDetailsMapper;
 import lpnu.mapper.OrderMapper;
 import lpnu.repository.MenuRepository;
@@ -13,6 +14,7 @@ import lpnu.repository.OrderRepository;
 import lpnu.repository.PizzaRepository;
 import lpnu.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -89,7 +91,8 @@ public class OrderServiceImpl implements OrderService {
                 orderRepository.update(order);
             }
         } else {
-            throw new IllegalArgumentException();
+            throw new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                    "Pizza can't be ordered");
         }
     }
 
