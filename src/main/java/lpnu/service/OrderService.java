@@ -12,5 +12,6 @@ public interface OrderService {
 
     void addPizzaToOrder(AddPizzaToOrderDTO addDTO);
     void removePizza(Long orderId, Long pizzaId);
+    boolean validateIsPizzaInMenu(Long pizzaId);
     void delete(Long id);
 }

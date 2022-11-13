@@ -2,11 +2,13 @@ package lpnu.service.impl;
 
 import lpnu.dto.AddPizzaToOrderDTO;
 import lpnu.dto.OrderDTO;
+import lpnu.entity.Menu;
 import lpnu.entity.Order;
 import lpnu.entity.OrderDetails;
 import lpnu.entity.Pizza;
 import lpnu.mapper.OrderDetailsMapper;
 import lpnu.mapper.OrderMapper;
+import lpnu.repository.MenuRepository;
 import lpnu.repository.OrderRepository;
 import lpnu.repository.PizzaRepository;
 import lpnu.service.OrderService;
@@ -31,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private PizzaRepository pizzaRepository;
+    @Autowired
+    private MenuRepository menuRepository;
 
 
     @Override
@@ -64,25 +68,28 @@ public class OrderServiceImpl implements OrderService {
 
         final Pizza pizza = pizzaRepository.findById(addDTO.getPizzaId());
 
+        if (validateIsPizzaInMenu(pizza.getId())) {
+            final boolean isPizzaInOrder = order.getOrders().stream()
+                    .map(OrderDetails::getPizza)
+                    .anyMatch(e -> e.equals(pizza));
 
-        final boolean isPizzaInOrder = order.getOrders().stream()
-                .map(OrderDetails::getPizza)
-                .anyMatch(e -> e.equals(pizza));
+            if (isPizzaInOrder) {
+                final OrderDetails savedOrderDetails = order.getOrders().stream()
+                        .filter(e -> e.getPizza().equals(pizza))
+                        .findFirst().get();
 
-        if (isPizzaInOrder) {
-            final OrderDetails savedOrderDetails = order.getOrders().stream()
-                    .filter(e -> e.getPizza().equals(pizza))
-                    .findFirst().get();
+                savedOrderDetails.setAmount(savedOrderDetails.getAmount() + addDTO.getAmount());
 
-            savedOrderDetails.setAmount(savedOrderDetails.getAmount() + addDTO.getAmount());
+                orderRepository.update(order);
 
-            orderRepository.update(order);
+            } else {
+                final OrderDetails orderDetails = new OrderDetails(pizza, addDTO.getAmount());
+                order.getOrders().add(orderDetails);
 
+                orderRepository.update(order);
+            }
         } else {
-            final OrderDetails orderDetails = new OrderDetails(pizza, addDTO.getAmount());
-            order.getOrders().add(orderDetails);
-
-            orderRepository.update(order);
+            throw new IllegalArgumentException();
         }
     }
 
@@ -95,12 +102,20 @@ public class OrderServiceImpl implements OrderService {
                 .filter(orderDetails -> orderDetails.getPizza().equals(pizzaToRemove))
                 .findFirst()
                 .orElseThrow();
-       final List<OrderDetails> ordersWithoutPizza = order.getOrders()
-               .stream()
-               .filter(orderDetails -> !orderDetails.equals(orderWithPizzaToRemove))
-               .toList();
-       order.setOrders(ordersWithoutPizza);
-       //orderRepository.update(ordersWithoutPizza);
+        final List<OrderDetails> ordersWithoutPizza = order.getOrders()
+                .stream()
+                .filter(orderDetails -> !orderDetails.equals(orderWithPizzaToRemove))
+                .toList();
+        order.setOrders(ordersWithoutPizza);
+    }
+
+    @Override
+    public boolean validateIsPizzaInMenu(final Long pizzaId) {
+        final Menu menu = menuRepository.getMenu();
+        return menu.getAllPizzas()
+                .stream()
+                .map(Pizza::getId)
+                .anyMatch(p -> p.equals(pizzaId));
     }
 
     @Override

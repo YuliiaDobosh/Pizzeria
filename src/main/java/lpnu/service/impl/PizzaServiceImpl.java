@@ -58,7 +58,7 @@ public class PizzaServiceImpl implements PizzaService {
     public PizzaDTO findById(final Long id) {
         return pizzaMapper.toDTO(pizzaRepository.findById(id));
     }
-
+    @Override
     public PizzaDTO addIngredient(final Long pizzaId, final Long ingredientId, final Integer portions) {
         final Pizza pizzaToChange = pizzaRepository.findById(pizzaId);
         final Map<Long, Integer> newIngredients = new HashMap<>(pizzaToChange.getIngredients());
@@ -80,19 +80,23 @@ public class PizzaServiceImpl implements PizzaService {
         }
     }
 
+    @Override
     public int addIngredientWeight(final Long pizzaId, final Long ingredientId) {
         return pizzaRepository.findById(pizzaId).getWeight() + ingredientRepository.findById(ingredientId).getWeight();
     }
 
+    @Override
     public BigDecimal addIngredientPrice(final Long pizzaId, final Long ingredientId) {
         return pizzaRepository.findById(pizzaId).getPrice().add(ingredientRepository.findById(ingredientId).getPrice());
     }
+
+    @Override
     public boolean validatePortionsToAdd(final Pizza pizza, final Long ingredientId, final Integer portions) {
         final Integer portionLimitToAdd = 1;
         final Integer portionLimitInPizza = 2;
         final Map<Long, Integer> wrongPortions = pizza.getIngredients().entrySet().stream()
-                .filter(e->e.getKey().equals(ingredientId))
-                .filter(e->e.getValue() >= portionLimitInPizza)
+                .filter(e -> e.getKey().equals(ingredientId))
+                .filter(e -> e.getValue() >= portionLimitInPizza)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         return wrongPortions.size() == 0 && portions.equals(portionLimitToAdd);
     }
