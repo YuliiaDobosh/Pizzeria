@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Data
 @AllArgsConstructor
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 public class OrderDetails {
     @NotNull
     private Pizza pizza;
+    @Positive
     @NotNull
     private int amount;
 }

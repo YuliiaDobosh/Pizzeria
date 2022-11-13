@@ -60,27 +60,45 @@ public class PizzaServiceImpl implements PizzaService {
     public PizzaDTO findById(final Long id) {
         return pizzaMapper.toDTO(pizzaRepository.findById(id));
     }
+
     @Override
     public PizzaDTO addIngredient(final Long pizzaId, final Long ingredientId, final Integer portions) {
         final Pizza pizzaToChange = pizzaRepository.findById(pizzaId);
         final Map<Long, Integer> newIngredients = new HashMap<>(pizzaToChange.getIngredients());
-        if (validatePortionsToAdd(pizzaToChange, ingredientId, portions)) {
-            if (newIngredients.containsKey(ingredientId)) {
-                newIngredients.entrySet().stream()
-                        .filter(e -> e.getKey().equals(ingredientId))
-                        .collect(Collectors.toMap(Map.Entry::getKey, v -> v.setValue(v.getValue() + portions)));
-            } else {
-                newIngredients.put(ingredientId, portions);
-            }
+        if (validateAdditionsWeight(pizzaToChange)) {
+            if (validatePortionsToAdd(pizzaToChange, ingredientId, portions)) {
+                if (newIngredients.containsKey(ingredientId)) {
+                    newIngredients.entrySet().stream()
+                            .filter(e -> e.getKey().equals(ingredientId))
+                            .collect(Collectors.toMap(Map.Entry::getKey, v -> v.setValue(v.getValue() + portions)));
+                } else {
+                    newIngredients.put(ingredientId, portions);
+                }
 
-            pizzaToChange.setIngredients(newIngredients);
-            pizzaToChange.setWeight(addIngredientWeight(pizzaId, ingredientId));
-            pizzaToChange.setPrice(addIngredientPrice(pizzaId, ingredientId));
-            return pizzaMapper.toDTO(pizzaToChange);
+                pizzaToChange.setIngredients(newIngredients);
+                pizzaToChange.setWeight(addIngredientWeight(pizzaId, ingredientId));
+                pizzaToChange.setPrice(addIngredientPrice(pizzaId, ingredientId));
+                return pizzaMapper.toDTO(pizzaToChange);
+            } else {
+                throw new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                        "You can not add ingredient to pizza. Portions can not be greater than 1.");
+            }
         } else {
             throw new ServiceException(HttpStatus.BAD_REQUEST.value(),
-                    "You can not add ingredient to pizza.Portions can not be greater than 1.");
+                    "Weight of all additions can not be greater than 200g");
         }
+    }
+
+    public void removeIngredient(final Long pizzaId, final Long ingredientId, final Integer portions) {
+        final Pizza pizza = pizzaRepository.findById(pizzaId);
+        final Map<Long, Integer> newIngredients = new HashMap<>(pizza.getIngredients());
+        newIngredients.entrySet()
+                .stream()
+                .filter(e -> e.getKey().equals(ingredientId))
+                .collect(Collectors.toMap(Map.Entry::getKey, v -> v.setValue(v.getValue() - portions)));
+        pizza.setIngredients(newIngredients);
+        pizza.setWeight(minusIngredientWeight(pizzaId, ingredientId, portions));
+        pizza.setPrice(minusIngredientPrice(pizzaId, ingredientId, portions));
     }
 
     @Override
@@ -88,9 +106,23 @@ public class PizzaServiceImpl implements PizzaService {
         return pizzaRepository.findById(pizzaId).getWeight() + ingredientRepository.findById(ingredientId).getWeight();
     }
 
+    public int minusIngredientWeight(final Long pizzaId, final Long ingredientId, final Integer portions) {
+        return pizzaRepository.findById(pizzaId).getWeight() - ingredientRepository.findById(ingredientId).getWeight() * portions;
+    }
+
+    public BigDecimal minusIngredientPrice(final Long pizzaId, final Long ingredientId, final Integer portions) {
+        final BigDecimal tmp = ingredientRepository.findById(ingredientId).getPrice().multiply(new BigDecimal(portions));
+        return pizzaRepository.findById(pizzaId).getPrice().subtract(tmp);
+    }
     @Override
     public BigDecimal addIngredientPrice(final Long pizzaId, final Long ingredientId) {
         return pizzaRepository.findById(pizzaId).getPrice().add(ingredientRepository.findById(ingredientId).getPrice());
+    }
+
+    public boolean validateAdditionsWeight(final Pizza pizza) {
+        final int totalWeight = pizza.getWeight();
+        final int additionsWeightLimit = 200;
+        return totalWeight - pizza.getSize().weight < additionsWeightLimit;
     }
 
     @Override
@@ -102,5 +134,6 @@ public class PizzaServiceImpl implements PizzaService {
                 .filter(e -> e.getValue() >= portionLimitInPizza)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         return wrongPortions.size() == 0 && portions.equals(portionLimitToAdd);
+
     }
 }

@@ -57,9 +57,9 @@ public class MenuRepository {
         return menuPizzaToUpdate;
     }
 
-    public void delete(final Long id) {
+    public void delete(final Long pizzaId) {
         menu.setAllPizzas(menu.getAllPizzas().stream()
-                .filter(e -> !e.getId().equals(id))
+                .filter(e -> !e.getId().equals(pizzaId))
                 .collect(Collectors.toList()));
     }
 }

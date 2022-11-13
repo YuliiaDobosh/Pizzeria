@@ -33,9 +33,9 @@ public class MenuResource {
         return menuService.update(pizzaDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable final Long id) {
-        menuService.delete(id);
+    @DeleteMapping("/{pizzaId}")
+    public ResponseEntity delete(@PathVariable final Long pizzaId) {
+        menuService.delete(pizzaId);
         return ResponseEntity.ok().build();
     }
 }

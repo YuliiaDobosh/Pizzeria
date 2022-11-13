@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lpnu.entity.enumeration.PizzaSize;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 public class PizzaDTO {
     @NotNull
     private String name;
+    @Positive
     @NotNull
     private BigDecimal price;
     @NotNull

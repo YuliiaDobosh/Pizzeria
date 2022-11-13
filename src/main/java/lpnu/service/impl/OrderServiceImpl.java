@@ -120,7 +120,6 @@ public class OrderServiceImpl implements OrderService {
                 .map(Pizza::getId)
                 .anyMatch(p -> p.equals(pizzaId));
     }
-
     @Override
     public void delete(final Long id) {
         orderRepository.delete(id);

@@ -19,6 +19,12 @@ public interface PizzaService {
 
     PizzaDTO addIngredient(Long pizzaId, Long ingredientId, Integer portions);
 
+    void removeIngredient(Long pizzaId, Long ingredientId, Integer portions);
+
+    int minusIngredientWeight(Long pizzaId, Long ingredientId, Integer portions);
+
+    BigDecimal minusIngredientPrice(Long pizzaId, Long ingredientId, Integer portions);
+
     int addIngredientWeight(Long pizzaId, Long ingredientId);
 
     BigDecimal addIngredientPrice(Long pizzaId, Long ingredientId);
