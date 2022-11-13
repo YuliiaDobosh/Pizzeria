@@ -66,7 +66,7 @@ public class IngredientRepository {
         final Path file = Paths.get("ingredients.txt");
         try {
             final String savedItemsAsString = Files.readString(file, StandardCharsets.UTF_16);
-            ingredients = JacksonUtil.deserialize(savedItemsAsString, new TypeReference<List<Ingredient>>() {
+            ingredients = JacksonUtil.deserialize(savedItemsAsString, new TypeReference<>() {
             });
 
             if (ingredients == null) {

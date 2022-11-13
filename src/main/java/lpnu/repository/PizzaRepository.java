@@ -1,7 +1,6 @@
 package lpnu.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import lpnu.entity.Ingredient;
 import lpnu.entity.Pizza;
 import lpnu.exception.ServiceException;
 import lpnu.util.JacksonUtil;
@@ -66,7 +65,7 @@ public class PizzaRepository {
         final Path file = Paths.get("pizza.txt");
         try {
             final String savedItemsAsString = Files.readString(file, StandardCharsets.UTF_16);
-            pizzas = JacksonUtil.deserialize(savedItemsAsString, new TypeReference<List<Pizza>>() {
+            pizzas = JacksonUtil.deserialize(savedItemsAsString, new TypeReference<>() {
             });
 
             if (pizzas == null) {

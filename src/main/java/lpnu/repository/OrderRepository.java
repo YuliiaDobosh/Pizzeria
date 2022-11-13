@@ -1,7 +1,6 @@
 package lpnu.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import lpnu.entity.Ingredient;
 import lpnu.entity.Order;
 import lpnu.exception.ServiceException;
 import lpnu.util.JacksonUtil;
@@ -67,7 +66,7 @@ public class OrderRepository {
         final Path file = Paths.get("order.txt");
         try {
             final String savedItemsAsString = Files.readString(file, StandardCharsets.UTF_16);
-            orders = JacksonUtil.deserialize(savedItemsAsString, new TypeReference<List<Order>>() {
+            orders = JacksonUtil.deserialize(savedItemsAsString, new TypeReference<>() {
             });
 
             if (orders == null) {
