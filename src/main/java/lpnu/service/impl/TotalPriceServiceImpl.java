@@ -1,4 +1,4 @@
-package lpnu.util;
+package lpnu.service.impl;
 
 import lpnu.entity.Order;
 import lpnu.repository.OrderRepository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 @Service
-public class TotalPriceService {
+public class TotalPriceServiceImpl {
     @Autowired
     OrderRepository orderRepository;
 

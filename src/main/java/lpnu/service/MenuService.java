@@ -1,7 +1,7 @@
 package lpnu.service;
 
-import lpnu.dto.MenuDTO;
-import lpnu.dto.PizzaDTO;
+import lpnu.entity.dto.MenuDTO;
+import lpnu.entity.dto.PizzaDTO;
 
 public interface MenuService {
     MenuDTO getMenu();

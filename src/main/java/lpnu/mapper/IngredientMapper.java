@@ -1,6 +1,6 @@
 package lpnu.mapper;
 
-import lpnu.dto.IngredientDTO;
+import lpnu.entity.dto.IngredientDTO;
 import lpnu.entity.Ingredient;
 import org.springframework.stereotype.Component;
 

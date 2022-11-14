@@ -1,9 +1,9 @@
 package lpnu.mapper;
 
-import lpnu.dto.OrderDTO;
+import lpnu.entity.dto.OrderDTO;
 import lpnu.entity.Order;
 import lpnu.repository.UserRepository;
-import lpnu.util.TotalPriceService;
+import lpnu.service.impl.TotalPriceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class OrderMapper {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private TotalPriceService totalPriceService;
+    private TotalPriceServiceImpl totalPriceService;
 
     public Order toEntity(final OrderDTO orderDTO) {
         final Order order = new Order();

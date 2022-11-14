@@ -1,4 +1,4 @@
-package lpnu.dto;
+package lpnu.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

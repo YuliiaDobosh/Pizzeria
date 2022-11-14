@@ -1,6 +1,6 @@
 package lpnu.service.impl;
 
-import lpnu.dto.UserDTO;
+import lpnu.entity.dto.UserDTO;
 import lpnu.entity.User;
 import lpnu.mapper.UserMapper;
 import lpnu.repository.UserRepository;

@@ -1,6 +1,6 @@
 package lpnu.service.impl;
 
-import lpnu.dto.PizzaDTO;
+import lpnu.entity.dto.PizzaDTO;
 import lpnu.entity.Pizza;
 import lpnu.exception.ServiceException;
 import lpnu.mapper.PizzaMapper;
@@ -26,6 +26,11 @@ public class PizzaServiceImpl implements PizzaService {
     private IngredientRepository ingredientRepository;
     @Autowired
     private PizzaMapper pizzaMapper;
+
+    private static final int additionsWeightLimit = 200;
+    private static final Integer portionLimitToAdd = 1;
+    private static final Integer portionLimitInPizza = 2;
+
 
     @Override
     public List<PizzaDTO> getAllPizzas() {
@@ -87,52 +92,50 @@ public class PizzaServiceImpl implements PizzaService {
         pizzaToChange.setPrice(addIngredientPrice(pizzaId, ingredientId));
         return pizzaMapper.toDTO(pizzaToChange);
     }
-        public void removeIngredient ( final Long pizzaId, final Long ingredientId, final Integer portions){
-            final Pizza pizza = pizzaRepository.findById(pizzaId);
-            final Map<Long, Integer> newIngredients = new HashMap<>(pizza.getIngredients());
-            newIngredients.entrySet()
-                    .stream()
-                    .filter(e -> e.getKey().equals(ingredientId))
-                    .collect(Collectors.toMap(Map.Entry::getKey, v -> v.setValue(v.getValue() - portions)));
-            pizza.setIngredients(newIngredients);
-            pizza.setWeight(minusIngredientWeight(pizzaId, ingredientId, portions));
-            pizza.setPrice(minusIngredientPrice(pizzaId, ingredientId, portions));
-        }
 
-        @Override
-        public int addIngredientWeight ( final Long pizzaId, final Long ingredientId){
-            return pizzaRepository.findById(pizzaId).getWeight() + ingredientRepository.findById(ingredientId).getWeight();
-        }
-
-        public int minusIngredientWeight ( final Long pizzaId, final Long ingredientId, final Integer portions){
-            return pizzaRepository.findById(pizzaId).getWeight() - ingredientRepository.findById(ingredientId).getWeight() * portions;
-        }
-
-        public BigDecimal minusIngredientPrice ( final Long pizzaId, final Long ingredientId, final Integer portions){
-            final BigDecimal tmp = ingredientRepository.findById(ingredientId).getPrice().multiply(new BigDecimal(portions));
-            return pizzaRepository.findById(pizzaId).getPrice().subtract(tmp);
-        }
-
-        @Override
-        public BigDecimal addIngredientPrice ( final Long pizzaId, final Long ingredientId){
-            return pizzaRepository.findById(pizzaId).getPrice().add(ingredientRepository.findById(ingredientId).getPrice());
-        }
-
-        public boolean validateAdditionsWeight ( final Pizza pizza){
-            final int totalWeight = pizza.getWeight();
-            final int additionsWeightLimit = 200;
-            return totalWeight - pizza.getSize().weight < additionsWeightLimit;
-        }
-
-        @Override
-        public boolean validatePortionsToAdd ( final Pizza pizza, final Long ingredientId, final Integer portions){
-            final Integer portionLimitToAdd = 1;
-            final Integer portionLimitInPizza = 2;
-            final Map<Long, Integer> wrongPortions = pizza.getIngredients().entrySet().stream()
-                    .filter(e -> e.getKey().equals(ingredientId))
-                    .filter(e -> e.getValue() >= portionLimitInPizza)
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            return wrongPortions.size() == 0 && portions.equals(portionLimitToAdd);
-
-        }
+    public void removeIngredient(final Long pizzaId, final Long ingredientId, final Integer portions) {
+        final Pizza pizza = pizzaRepository.findById(pizzaId);
+        final Map<Long, Integer> newIngredients = new HashMap<>(pizza.getIngredients());
+        newIngredients.entrySet()
+                .stream()
+                .filter(e -> e.getKey().equals(ingredientId))
+                .collect(Collectors.toMap(Map.Entry::getKey, v -> v.setValue(v.getValue() - portions)));
+        pizza.setIngredients(newIngredients);
+        pizza.setWeight(minusIngredientWeight(pizzaId, ingredientId, portions));
+        pizza.setPrice(minusIngredientPrice(pizzaId, ingredientId, portions));
     }
+
+    @Override
+    public int addIngredientWeight(final Long pizzaId, final Long ingredientId) {
+        return pizzaRepository.findById(pizzaId).getWeight() + ingredientRepository.findById(ingredientId).getWeight();
+    }
+
+    public int minusIngredientWeight(final Long pizzaId, final Long ingredientId, final Integer portions) {
+        return pizzaRepository.findById(pizzaId).getWeight() - ingredientRepository.findById(ingredientId).getWeight() * portions;
+    }
+
+    public BigDecimal minusIngredientPrice(final Long pizzaId, final Long ingredientId, final Integer portions) {
+        final BigDecimal tmp = ingredientRepository.findById(ingredientId).getPrice().multiply(new BigDecimal(portions));
+        return pizzaRepository.findById(pizzaId).getPrice().subtract(tmp);
+    }
+
+    @Override
+    public BigDecimal addIngredientPrice(final Long pizzaId, final Long ingredientId) {
+        return pizzaRepository.findById(pizzaId).getPrice().add(ingredientRepository.findById(ingredientId).getPrice());
+    }
+
+    public boolean validateAdditionsWeight(final Pizza pizza) {
+        final int totalWeight = pizza.getWeight();
+        return totalWeight - pizza.getSize().weight < additionsWeightLimit;
+    }
+
+    @Override
+    public boolean validatePortionsToAdd(final Pizza pizza, final Long ingredientId, final Integer portions) {
+        final Map<Long, Integer> wrongPortions = pizza.getIngredients().entrySet().stream()
+                .filter(e -> e.getKey().equals(ingredientId))
+                .filter(e -> e.getValue() >= portionLimitInPizza)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return wrongPortions.size() == 0 && portions.equals(portionLimitToAdd);
+
+    }
+}

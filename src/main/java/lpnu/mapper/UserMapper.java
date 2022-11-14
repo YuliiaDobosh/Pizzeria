@@ -1,6 +1,6 @@
 package lpnu.mapper;
 
-import lpnu.dto.UserDTO;
+import lpnu.entity.dto.UserDTO;
 import lpnu.entity.User;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package lpnu.resource;
 
-import lpnu.dto.IngredientDTO;
+import lpnu.entity.dto.IngredientDTO;
 
 
 import lpnu.service.IngredientService;

@@ -1,6 +1,6 @@
 package lpnu.mapper;
 
-import lpnu.dto.OrderDetailsDTO;
+import lpnu.entity.dto.OrderDetailsDTO;
 import lpnu.entity.OrderDetails;
 import lpnu.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;

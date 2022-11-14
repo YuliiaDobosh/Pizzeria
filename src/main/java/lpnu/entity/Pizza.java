@@ -24,7 +24,7 @@ public class Pizza {
     private PizzaSize size;
     @NotNull
     private int weight;
-    @NotNull
+
     private Map<Long, Integer> ingredients;
     private Long id;
 

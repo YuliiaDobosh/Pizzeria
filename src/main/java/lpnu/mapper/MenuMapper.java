@@ -1,6 +1,6 @@
 package lpnu.mapper;
 
-import lpnu.dto.MenuDTO;
+import lpnu.entity.dto.MenuDTO;
 import lpnu.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package lpnu.service.impl;
 
-import lpnu.dto.AddPizzaToOrderDTO;
-import lpnu.dto.OrderDTO;
+import lpnu.entity.dto.AddPizzaToOrderDTO;
+import lpnu.entity.dto.OrderDTO;
 import lpnu.entity.Menu;
 import lpnu.entity.Order;
 import lpnu.entity.OrderDetails;
@@ -70,30 +70,29 @@ public class OrderServiceImpl implements OrderService {
 
         final Pizza pizza = pizzaRepository.findById(addDTO.getPizzaId());
 
-        if (validateIsPizzaInMenu(pizza.getId())) {
-            final boolean isPizzaInOrder = order.getOrders().stream()
-                    .map(OrderDetails::getPizza)
-                    .anyMatch(e -> e.equals(pizza));
+        if (!validateIsPizzaInMenu(pizza.getId())) {
 
-            if (isPizzaInOrder) {
-                final OrderDetails savedOrderDetails = order.getOrders().stream()
-                        .filter(e -> e.getPizza().equals(pizza))
-                        .findFirst().get();
-
-                savedOrderDetails.setAmount(savedOrderDetails.getAmount() + addDTO.getAmount());
-
-                orderRepository.update(order);
-
-            } else {
-                final OrderDetails orderDetails = new OrderDetails(pizza, addDTO.getAmount());
-                order.getOrders().add(orderDetails);
-
-                orderRepository.update(order);
-            }
-        } else {
             throw new ServiceException(HttpStatus.BAD_REQUEST.value(),
                     "Pizza can't be ordered");
         }
+        final boolean isPizzaInOrder = order.getOrders().stream()
+                .map(OrderDetails::getPizza)
+                .anyMatch(e -> e.equals(pizza));
+
+        if (isPizzaInOrder) {
+            final OrderDetails savedOrderDetails = order.getOrders().stream()
+                    .filter(e -> e.getPizza().equals(pizza))
+                    .findFirst().get();
+
+            savedOrderDetails.setAmount(savedOrderDetails.getAmount() + addDTO.getAmount());
+
+        } else {
+            final OrderDetails orderDetails = new OrderDetails(pizza, addDTO.getAmount());
+            order.getOrders().add(orderDetails);
+
+        }
+        orderRepository.update(order);
+
     }
 
     @Override
@@ -120,8 +119,11 @@ public class OrderServiceImpl implements OrderService {
                 .map(Pizza::getId)
                 .anyMatch(p -> p.equals(pizzaId));
     }
+
     @Override
     public void delete(final Long id) {
         orderRepository.delete(id);
     }
+
 }
+

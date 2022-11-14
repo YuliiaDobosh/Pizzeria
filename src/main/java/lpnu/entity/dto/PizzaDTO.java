@@ -1,4 +1,4 @@
-package lpnu.dto;
+package lpnu.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class PizzaDTO {
     private PizzaSize size;
     @NotNull
     private int weight;
-    @NotNull
+
     private Map<Long, Integer> ingredients;
     private Long id;
 }

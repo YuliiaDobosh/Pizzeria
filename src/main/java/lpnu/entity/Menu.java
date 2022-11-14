@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Menu {
-    @NotNull
+
     private List<Pizza> allPizzas = new ArrayList<>();
 
     public Menu(final Menu menu) {

@@ -1,7 +1,7 @@
 package lpnu.resource;
 
-import lpnu.dto.AddPizzaToOrderDTO;
-import lpnu.dto.OrderDTO;
+import lpnu.entity.dto.AddPizzaToOrderDTO;
+import lpnu.entity.dto.OrderDTO;
 import lpnu.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

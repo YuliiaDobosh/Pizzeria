@@ -16,7 +16,7 @@ public class Order {
     private Long id;
     @NotNull
     private User user;
-    @NotNull
+
     private List<OrderDetails> orders;
     @NotNull
     private LocalDateTime orderDateTime;

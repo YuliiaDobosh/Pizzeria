@@ -1,4 +1,4 @@
-package lpnu.dto;
+package lpnu.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,15 +10,12 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IngredientDTO {
+public class OrderDetailsDTO {
+    private Long pizzaId;
     @NotNull
-    private String name;
+    private String pizzaName;
     @Positive
     @NotNull
-    private int weight;
-    @Positive
-    @NotNull
-    private BigDecimal price;
-    private Long id;
+    private int amount;
+    private BigDecimal pizzaPrice;
 }
-
