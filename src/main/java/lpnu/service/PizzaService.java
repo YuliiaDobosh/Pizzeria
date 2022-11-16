@@ -1,6 +1,6 @@
 package lpnu.service;
 
-import lpnu.entity.dto.PizzaDTO;
+import lpnu.dto.PizzaDTO;
 import lpnu.entity.Pizza;
 
 import java.math.BigDecimal;

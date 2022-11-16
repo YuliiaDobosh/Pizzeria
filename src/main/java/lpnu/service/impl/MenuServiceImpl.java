@@ -1,7 +1,7 @@
 package lpnu.service.impl;
 
-import lpnu.entity.dto.MenuDTO;
-import lpnu.entity.dto.PizzaDTO;
+import lpnu.dto.MenuDTO;
+import lpnu.dto.PizzaDTO;
 import lpnu.entity.Pizza;
 import lpnu.mapper.MenuMapper;
 import lpnu.mapper.PizzaMapper;

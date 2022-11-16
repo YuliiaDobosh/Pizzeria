@@ -1,6 +1,6 @@
 package lpnu.service;
 
-import lpnu.entity.dto.UserDTO;
+import lpnu.dto.UserDTO;
 
 import java.util.List;
 

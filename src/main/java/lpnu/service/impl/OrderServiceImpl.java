@@ -1,11 +1,8 @@
 package lpnu.service.impl;
 
-import lpnu.entity.dto.AddPizzaToOrderDTO;
-import lpnu.entity.dto.OrderDTO;
-import lpnu.entity.Menu;
-import lpnu.entity.Order;
-import lpnu.entity.OrderDetails;
-import lpnu.entity.Pizza;
+import lpnu.dto.AddPizzaToOrderDTO;
+import lpnu.dto.OrderDTO;
+import lpnu.entity.*;
 import lpnu.exception.ServiceException;
 import lpnu.mapper.OrderDetailsMapper;
 import lpnu.mapper.OrderMapper;
@@ -17,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDetailsMapper orderDetailsMapper;
 
-
+    @Autowired
+    private TotalPriceServiceImpl totalPriceService;
     @Autowired
     private PizzaRepository pizzaRepository;
     @Autowired
@@ -52,8 +51,15 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderDateTime(LocalDateTime.now());
         order.setOrders(new ArrayList<>());
-
         orderRepository.save(order);
+
+        return orderMapper.toDTO(order);
+    }
+
+    @Override
+    public OrderDTO update(final OrderDTO orderDTO) {
+        final Order order = orderMapper.toEntity(orderDTO);
+        orderRepository.update(order);
 
         return orderMapper.toDTO(order);
     }
@@ -71,7 +77,6 @@ public class OrderServiceImpl implements OrderService {
         final Pizza pizza = pizzaRepository.findById(addDTO.getPizzaId());
 
         if (!validateIsPizzaInMenu(pizza.getId())) {
-
             throw new ServiceException(HttpStatus.BAD_REQUEST.value(),
                     "Pizza can't be ordered");
         }
@@ -92,7 +97,6 @@ public class OrderServiceImpl implements OrderService {
 
         }
         orderRepository.update(order);
-
     }
 
     @Override
@@ -118,6 +122,28 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(Pizza::getId)
                 .anyMatch(p -> p.equals(pizzaId));
+    }
+
+    @Override
+    public BigDecimal pay(final Long orderId, final PromoCode promoCode) {
+        final Order order = orderRepository.findById(orderId);
+        final BigDecimal orderPrice = totalPriceService.getTotalPrice(orderId);
+        if (validatePromoCode(orderId, promoCode)) {
+            throw new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                    "PromoCode is expired");
+        }
+        final double discount1 = (double) promoCode.getDiscount() / 100;
+        final BigDecimal discount = orderPrice.multiply(new BigDecimal(discount1));
+        final BigDecimal finalPrice = orderPrice.subtract(discount);
+        order.setTotalPrice(finalPrice);
+        orderRepository.update(order);
+        return finalPrice;
+    }
+
+    @Override
+    public boolean validatePromoCode(final Long orderId, final PromoCode promoCode) {
+        final Order order = orderRepository.findById(orderId);
+        return promoCode.getExpiringDate().isBefore(order.getOrderDateTime());
     }
 
     @Override

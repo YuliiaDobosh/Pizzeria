@@ -1,6 +1,6 @@
 package lpnu.resource;
 
-import lpnu.entity.dto.UserDTO;
+import lpnu.dto.UserDTO;
 import lpnu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

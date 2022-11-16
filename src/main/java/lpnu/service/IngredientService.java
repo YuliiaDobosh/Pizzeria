@@ -1,6 +1,6 @@
 package lpnu.service;
 
-import lpnu.entity.dto.IngredientDTO;
+import lpnu.dto.IngredientDTO;
 
 import java.util.List;
 

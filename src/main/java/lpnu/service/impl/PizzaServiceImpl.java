@@ -1,6 +1,6 @@
 package lpnu.service.impl;
 
-import lpnu.entity.dto.PizzaDTO;
+import lpnu.dto.PizzaDTO;
 import lpnu.entity.Pizza;
 import lpnu.exception.ServiceException;
 import lpnu.mapper.PizzaMapper;

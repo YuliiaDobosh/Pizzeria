@@ -1,9 +1,8 @@
-package lpnu.entity.dto;
+package lpnu.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
@@ -11,14 +10,15 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddPizzaToOrderDTO {
+public class IngredientDTO {
+    @NotNull
+    private String name;
     @Positive
     @NotNull
-    private Long orderId;
+    private int weight;
     @Positive
     @NotNull
-    private Long pizzaId;
-    private BigDecimal pizzaPrice;
-    @Positive
-    private int amount;
+    private BigDecimal price;
+    private Long id;
 }
+

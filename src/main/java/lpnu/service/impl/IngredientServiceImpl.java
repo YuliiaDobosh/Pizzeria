@@ -1,6 +1,6 @@
 package lpnu.service.impl;
 
-import lpnu.entity.dto.IngredientDTO;
+import lpnu.dto.IngredientDTO;
 import lpnu.entity.Ingredient;
 import lpnu.mapper.IngredientMapper;
 import lpnu.repository.IngredientRepository;

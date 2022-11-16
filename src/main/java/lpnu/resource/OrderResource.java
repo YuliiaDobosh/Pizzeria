@@ -1,13 +1,15 @@
 package lpnu.resource;
 
-import lpnu.entity.dto.AddPizzaToOrderDTO;
-import lpnu.entity.dto.OrderDTO;
+import lpnu.dto.AddPizzaToOrderDTO;
+import lpnu.dto.OrderDTO;
+import lpnu.entity.PromoCode;
 import lpnu.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -33,6 +35,10 @@ public class OrderResource {
     @PostMapping("/add-pizza")
     public void addPizzaToOrder(final @RequestBody @Validated AddPizzaToOrderDTO addDTO) {
         orderService.addPizzaToOrder(addDTO);
+    }
+    @GetMapping("/pay/{orderId}")
+    public BigDecimal pay(final @PathVariable Long orderId, final @RequestBody @Validated PromoCode promoCode){
+        return orderService.pay(orderId, promoCode);
     }
     @DeleteMapping("/{orderId}/{pizzaId}")
     public ResponseEntity removePizza(final @PathVariable Long orderId, final @PathVariable Long pizzaId) {

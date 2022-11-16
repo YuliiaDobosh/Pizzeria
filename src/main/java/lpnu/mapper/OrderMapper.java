@@ -1,6 +1,6 @@
 package lpnu.mapper;
 
-import lpnu.entity.dto.OrderDTO;
+import lpnu.dto.OrderDTO;
 import lpnu.entity.Order;
 import lpnu.repository.UserRepository;
 import lpnu.service.impl.TotalPriceServiceImpl;
@@ -40,7 +40,7 @@ public class OrderMapper {
         if (order.getOrders() != null) {
             orderDTO.setOrders(order.getOrders().stream().map(orderDetailsMapper::toDTO).collect(Collectors.toList()));
         }
-        orderDTO.setTotalPrice(totalPriceService.getTotalPrice(orderDTO.getId()));
+        orderDTO.setTotalPrice(totalPriceService.getTotalPrice(order.getId()));
         return orderDTO;
     }
 }

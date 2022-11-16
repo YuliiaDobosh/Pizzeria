@@ -14,9 +14,12 @@ public class TotalPriceServiceImpl {
 
     public BigDecimal getTotalPrice(final Long id) {
         final Order order = orderRepository.findById(id);
-        return order.getOrders()
+        final BigDecimal totalPrice = order.getOrders()
                 .stream()
                 .map(orderDetails -> orderDetails.getPizza().getPrice().multiply(new BigDecimal(orderDetails.getAmount())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+        order.setTotalPrice(totalPrice);
+        orderRepository.update(order);
+        return totalPrice;
     }
 }

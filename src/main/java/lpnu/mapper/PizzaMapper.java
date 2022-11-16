@@ -1,6 +1,6 @@
 package lpnu.mapper;
 
-import lpnu.entity.dto.PizzaDTO;
+import lpnu.dto.PizzaDTO;
 import lpnu.entity.Pizza;
 import org.springframework.stereotype.Component;
 

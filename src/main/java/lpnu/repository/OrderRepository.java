@@ -30,7 +30,6 @@ public class OrderRepository {
     public Order save(final Order order) {
         ++id;
         order.setId(id);
-
         orders.add(order);
 
         return order;

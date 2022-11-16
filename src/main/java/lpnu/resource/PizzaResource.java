@@ -1,7 +1,7 @@
 package lpnu.resource;
 
 
-import lpnu.entity.dto.PizzaDTO;
+import lpnu.dto.PizzaDTO;
 import lpnu.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
