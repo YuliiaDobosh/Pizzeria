@@ -2,13 +2,14 @@ package lpnu.service.impl;
 
 import lpnu.entity.Order;
 import lpnu.repository.OrderRepository;
+import lpnu.service.TotalPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
-public class TotalPriceServiceImpl {
+public class TotalPriceServiceImpl implements TotalPriceService {
     @Autowired
     OrderRepository orderRepository;
 

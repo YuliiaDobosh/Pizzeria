@@ -1,5 +1,6 @@
 package lpnu.service.impl;
 
+import lombok.AllArgsConstructor;
 import lpnu.dto.UserDTO;
 import lpnu.entity.User;
 import lpnu.mapper.UserMapper;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -53,4 +55,6 @@ public class UserServiceImpl implements UserService {
     public UserDTO findById(final Long id) {
         return userMapper.toDTO(userRepository.findById(id));
     }
+
+
 }

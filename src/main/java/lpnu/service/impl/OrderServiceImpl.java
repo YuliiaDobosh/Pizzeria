@@ -1,15 +1,17 @@
 package lpnu.service.impl;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lpnu.dto.AddPizzaToOrderDTO;
 import lpnu.dto.OrderDTO;
 import lpnu.entity.*;
 import lpnu.exception.ServiceException;
-import lpnu.mapper.OrderDetailsMapper;
 import lpnu.mapper.OrderMapper;
 import lpnu.repository.MenuRepository;
 import lpnu.repository.OrderRepository;
 import lpnu.repository.PizzaRepository;
 import lpnu.service.OrderService;
+import lpnu.service.TotalPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,22 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    private OrderRepository orderRepository;
-
+    private final OrderRepository orderRepository;
     @Autowired
-    private OrderMapper orderMapper;
+    private final OrderMapper orderMapper;
     @Autowired
-    private OrderDetailsMapper orderDetailsMapper;
-
+    private final TotalPriceService totalPriceService;
     @Autowired
-    private TotalPriceServiceImpl totalPriceService;
+    private final PizzaRepository pizzaRepository;
     @Autowired
-    private PizzaRepository pizzaRepository;
-    @Autowired
-    private MenuRepository menuRepository;
+    private final MenuRepository menuRepository;
 
 
     @Override
