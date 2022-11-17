@@ -39,7 +39,7 @@ public class UserRepository {
         return users.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new ServiceException(HttpStatus.BAD_REQUEST.value(),
+                .orElseThrow(() -> new ServiceException(400,
                         "User can not be found by id: " + id));
     }
 

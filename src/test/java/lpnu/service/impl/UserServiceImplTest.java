@@ -4,6 +4,7 @@ import lpnu.Application;
 import lpnu.dto.UserDTO;
 import lpnu.entity.User;
 import lpnu.entity.enumeration.UserRole;
+import lpnu.exception.ServiceException;
 import lpnu.mapper.UserMapper;
 import lpnu.repository.UserRepository;
 import lpnu.service.UserService;
@@ -14,8 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -51,6 +51,24 @@ public class UserServiceImplTest {
         assertEquals(userSurname, userDTO.getSurname());
         assertEquals(userEmail, userDTO.getEmail());
         assertEquals(user.getRole(), userDTO.getRole());
+    }
+    @Test
+    public void test_findUserById_userNotExist() throws Exception {
+        final UserRepository userRepository = Mockito.mock(UserRepository.class);
+        final UserMapper userMapper = Mockito.mock(UserMapper.class);
 
+        final UserService userService = new UserServiceImpl(userRepository, userMapper);
+
+        when(userRepository.findById(1L)).thenThrow(new ServiceException(400, "error some exception"));
+        when(userMapper.toDTO(any())).thenCallRealMethod();
+
+        try {
+            final UserDTO userDTO = userService.findById(1L);
+            fail();
+        } catch (final ServiceException e) {
+
+        }catch (final Exception e){
+            fail();
+        }
     }
 }

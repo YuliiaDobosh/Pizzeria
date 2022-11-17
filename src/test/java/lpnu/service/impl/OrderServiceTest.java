@@ -39,9 +39,9 @@ public class OrderServiceTest {
 
 
         final AddPizzaToOrderDTO addPizzaToOrderDTO = new AddPizzaToOrderDTO(
-                1L ,2L ,new BigDecimal(300),2);
+                1L, 2L, new BigDecimal(300), 2);
 
-     when(orderRepository.findById(1L)).thenReturn(new Order());
-     when(orderMapper.toDTO(any())).thenCallRealMethod();
+        when(orderRepository.findById(1L)).thenReturn(new Order());
+        when(orderMapper.toDTO(any())).thenCallRealMethod();
     }
 }
