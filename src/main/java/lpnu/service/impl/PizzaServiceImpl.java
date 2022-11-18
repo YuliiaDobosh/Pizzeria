@@ -1,5 +1,6 @@
 package lpnu.service.impl;
 
+import lombok.AllArgsConstructor;
 import lpnu.dto.PizzaDTO;
 import lpnu.entity.Pizza;
 import lpnu.exception.ServiceException;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class PizzaServiceImpl implements PizzaService {
 
     @Autowired
