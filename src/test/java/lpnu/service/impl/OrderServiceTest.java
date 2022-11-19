@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
@@ -94,5 +95,66 @@ public class OrderServiceTest {
         } catch (final Exception e) {
             fail();
         }
+    }
+
+    @Test
+    public void test_addPizzaToOrder_checkPizzaAmountInOldOrder() {
+        final OrderRepository orderRepository = Mockito.mock(OrderRepository.class);
+        final OrderMapper orderMapper = Mockito.mock(OrderMapper.class);
+        final TotalPriceServiceImpl totalPriceService = Mockito.mock(TotalPriceServiceImpl.class);
+        final PizzaRepository pizzaRepository = Mockito.mock(PizzaRepository.class);
+        final MenuRepository menuRepository = Mockito.mock(MenuRepository.class);
+
+        final String userName = "Tom";
+        final String userSurname = "Cat";
+        final String userEmail = "Tom@gmail.com";
+
+        final User user = new User(1L, userName,
+                userSurname, userEmail, UserRole.ADMIN);
+
+        final OrderService orderService = new OrderServiceImpl(orderRepository, orderMapper,
+                totalPriceService, pizzaRepository, menuRepository);
+
+
+        final AddPizzaToOrderDTO addPizzaToOrderDTO = new AddPizzaToOrderDTO(
+                1L, 8L, new BigDecimal(130), 1);
+
+        final Order order = new Order();
+        order.setId(1L);
+        order.setTotalPrice(new BigDecimal(140));
+        order.setTotalPriceService(totalPriceService);
+        order.setOrders(Stream.of(
+                new OrderDetails(new Pizza(
+                        "Margarita", new BigDecimal(130), PizzaSize.MEDIUM,
+                        PizzaSize.MEDIUM.weight, new HashMap<>(), 8L), 2)
+        ).collect(Collectors.toList()));
+        order.setUser(user);
+
+        final Pizza pizza = new Pizza();
+        pizza.setWeight(PizzaSize.MEDIUM.weight);
+        pizza.setIngredients(new HashMap<>());
+        pizza.setId(8L);
+        pizza.setName("Margarita");
+        pizza.setPrice(new BigDecimal(130));
+        pizza.setSize(PizzaSize.MEDIUM);
+
+        final Menu menu = new Menu();
+        menu.setAllPizzas(Stream.of(
+                new Pizza(
+                        "Hawaii", new BigDecimal(140), PizzaSize.SMALL,
+                        PizzaSize.SMALL.weight, new HashMap<>(), 9L),
+                new Pizza("Margarita", new BigDecimal(130), PizzaSize.MEDIUM,
+                        PizzaSize.MEDIUM.weight, new HashMap<>(), 8L),
+                new Pizza("Capriciosa", new BigDecimal(150), PizzaSize.LARGE,
+                        PizzaSize.LARGE.weight, new HashMap<>(), 10L)
+        ).collect(Collectors.toList()));
+
+        when(orderRepository.findById(1L)).thenReturn(order);
+        when(pizzaRepository.findById(8L)).thenReturn(pizza);
+        when(menuRepository.getMenu()).thenReturn(menu);
+
+        orderService.addPizzaToOrder(addPizzaToOrderDTO);
+        assertEquals(3, order.getOrders().get(0).getAmount());
+
     }
 }
