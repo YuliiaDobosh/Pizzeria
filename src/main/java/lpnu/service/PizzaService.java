@@ -29,5 +29,6 @@ public interface PizzaService {
 
     BigDecimal addIngredientPrice(Long pizzaId, Long ingredientId);
 
+    boolean validateAdditionsWeight(Pizza pizza);
     boolean validatePortionsToAdd(Pizza pizza, Long ingredientId, Integer portions);
 }

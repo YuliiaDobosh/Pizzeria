@@ -79,7 +79,6 @@ public class PizzaServiceImpl implements PizzaService {
         if (!validatePortionsToAdd(pizzaToChange, ingredientId, portions)) {
             throw new ServiceException(HttpStatus.BAD_REQUEST.value(),
                     "You can not add ingredient to pizza. Portions can not be greater than 1.");
-
         }
         if (newIngredients.containsKey(ingredientId)) {
             newIngredients.entrySet().stream()
@@ -125,7 +124,7 @@ public class PizzaServiceImpl implements PizzaService {
     public BigDecimal addIngredientPrice(final Long pizzaId, final Long ingredientId) {
         return pizzaRepository.findById(pizzaId).getPrice().add(ingredientRepository.findById(ingredientId).getPrice());
     }
-
+    @Override
     public boolean validateAdditionsWeight(final Pizza pizza) {
         final int totalWeight = pizza.getWeight();
         return totalWeight - pizza.getSize().weight < additionsWeightLimit;
@@ -138,6 +137,5 @@ public class PizzaServiceImpl implements PizzaService {
                 .filter(e -> e.getValue() >= portionLimitInPizza)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         return wrongPortions.size() == 0 && portions.equals(portionLimitToAdd);
-
     }
 }

@@ -2,6 +2,7 @@ package lpnu.service.impl;
 
 import lpnu.Application;
 import lpnu.dto.PizzaDTO;
+import lpnu.entity.Ingredient;
 import lpnu.entity.Pizza;
 import lpnu.entity.enumeration.PizzaSize;
 import lpnu.exception.ServiceException;
@@ -22,7 +23,6 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.ArgumentMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -80,6 +80,84 @@ public class PizzaServiceImplTest {
         } catch (final Exception e) {
             fail();
         }
+    }
+
+    @Test
+    public void test_addIngredient_notValidWeightOfAdditions() throws Exception {
+        final PizzaRepository pizzaRepository = Mockito.mock(PizzaRepository.class);
+        final PizzaMapper pizzaMapper = Mockito.mock(PizzaMapper.class);
+        final IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
+
+        final PizzaService pizzaService = new PizzaServiceImpl(pizzaRepository, ingredientRepository, pizzaMapper);
+
+        final String pizzaName = "Hawaii";
+        final BigDecimal pizzaPrice = new BigDecimal(300);
+        final int pizzaWeight = PizzaSize.MEDIUM.weight;
+        final Map<Long, Integer> pizzaIngredients = new HashMap<>();
+        pizzaIngredients.put(1L, 15);
+
+        final Pizza pizza = new Pizza(pizzaName, pizzaPrice, PizzaSize.MEDIUM,
+                pizzaWeight, pizzaIngredients, 1L);
+
+        when(pizzaRepository.findById(1L)).thenReturn(pizza);
+
+        try {
+            pizzaService.addIngredient(1L, 1L, 1);
+            fail();
+        } catch (final ServiceException e) {
+
+        } catch (final Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void test_validatePortionsToAdd_inValidNumberOfPortions() throws Exception {
+        final PizzaRepository pizzaRepository = Mockito.mock(PizzaRepository.class);
+        final PizzaMapper pizzaMapper = Mockito.mock(PizzaMapper.class);
+        final IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
+
+        final PizzaService pizzaService = new PizzaServiceImpl(pizzaRepository, ingredientRepository, pizzaMapper);
+
+        final String pizzaName = "Hawaii";
+        final BigDecimal pizzaPrice = new BigDecimal(300);
+        final int pizzaWeight = PizzaSize.MEDIUM.weight;
+        final Map<Long, Integer> pizzaIngredients = new HashMap<>();
+        pizzaIngredients.put(1L, 15);
+
+        final Pizza pizza = new Pizza(pizzaName, pizzaPrice, PizzaSize.MEDIUM,
+                pizzaWeight, pizzaIngredients, 1L);
+
+        final Ingredient ingredient = new Ingredient();
+        ingredient.setId(3L);
+        ingredient.setWeight(30);
+        ingredient.setName("tomato");
+        ingredient.setPrice(new BigDecimal(50));
+//        final Ingredient ingredient = new Ingredient();
+//        ingredient.setId(3L);
+//        ingredient.setWeight(30);
+//        ingredient.setName("tomato");
+//        ingredient.setPrice(new BigDecimal(50));
+
+//        final Map<Long, Integer> portion = new HashMap<>();
+//        portion.put(1L, 1);
+//
+//        when(pizzaRepository.findById(1L)).thenReturn(pizza);
+//        when(ingredientRepository.findById(3L)).thenReturn(ingredient);
+//
+//        when(pizzaService.validatePortionsToAdd(pizza,3L,3)).thenThrow(new ServiceException(400, "error some exception"));
+//        pizzaService.validatePortionsToAdd(pizza, 3L, 3);
+//
+//        try {
+//            pizzaService.validatePortionsToAdd(pizza,3L,3);
+//            fail();
+//        } catch (final ServiceException e) {
+//
+//        } catch (final Exception e) {
+//            fail();
+//        }
+        when(pizzaRepository.findById(1L)).thenReturn(pizza);
+
 
     }
 }
