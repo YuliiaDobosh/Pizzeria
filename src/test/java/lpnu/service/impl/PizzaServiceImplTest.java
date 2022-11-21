@@ -133,31 +133,11 @@ public class PizzaServiceImplTest {
         ingredient.setWeight(30);
         ingredient.setName("tomato");
         ingredient.setPrice(new BigDecimal(50));
-//        final Ingredient ingredient = new Ingredient();
-//        ingredient.setId(3L);
-//        ingredient.setWeight(30);
-//        ingredient.setName("tomato");
-//        ingredient.setPrice(new BigDecimal(50));
 
-//        final Map<Long, Integer> portion = new HashMap<>();
-//        portion.put(1L, 1);
-//
-//        when(pizzaRepository.findById(1L)).thenReturn(pizza);
-//        when(ingredientRepository.findById(3L)).thenReturn(ingredient);
-//
-//        when(pizzaService.validatePortionsToAdd(pizza,3L,3)).thenThrow(new ServiceException(400, "error some exception"));
-//        pizzaService.validatePortionsToAdd(pizza, 3L, 3);
-//
-//        try {
-//            pizzaService.validatePortionsToAdd(pizza,3L,3);
-//            fail();
-//        } catch (final ServiceException e) {
-//
-//        } catch (final Exception e) {
-//            fail();
-//        }
         when(pizzaRepository.findById(1L)).thenReturn(pizza);
 
-
+        assertEquals(false ,pizzaService.validatePortionsToAdd(pizza,3L,3));
     }
+
+
 }
